@@ -1,0 +1,68 @@
+.curtain-container {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background: rgb(255, 255, 255);
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.curtain {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background:#FEF3C7;
+  z-index: 2;
+  animation: openCurtain 3s forwards;
+}
+
+.left-curtain {
+  left: 0;
+  border-right: 2px solid white;
+  animation-name: openCurtainLeft;
+}
+
+.right-curtain {
+  right: 0;
+  border-left: 2px solid white;
+  animation-name: openCurtainRight;
+}
+
+@keyframes openCurtainLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translate(-100%); }
+}
+
+@keyframes openCurtainRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+.logo-container {
+  position: absolute;
+  height: 400px;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  animation: fadeInZoom 2s ease-in-out 3s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInZoom {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 1;
+  }
+}
+
+.logo-animation {
+  width: 180px;
+  height: auto;
+  filter: drop-shadow(0 0 10px rgb(127, 125, 125));
+}

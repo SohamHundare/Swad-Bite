@@ -1,0 +1,68 @@
+.scroll-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* Full screen */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-auto-rows: 300px; /* Bigger cards */
+  gap: 10px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.scroll-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, black 5%, transparent 20%, transparent 80%, black 95%);
+  z-index: 1;
+}
+
+.scroll-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  animation: scrollUp 15s linear infinite;
+  animation-delay: calc(var(--i) * 2s);
+  opacity: 0.7;
+}
+
+@keyframes scrollUp {
+  0% {
+    transform: translateY(100vh);
+  }
+  100% {
+    transform: translateY(-100vh);
+  }
+}
+
+.scroll-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.scroll-images {
+  display: flex;
+  flex-direction: column;
+  animation: scrollUp 12s linear infinite;
+}
+
+.scroll-images img {
+  width: 100px;
+  height: 80px;
+  margin: 10px auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+@keyframes scrollUp {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(-100%); }
+}

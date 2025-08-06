@@ -1,0 +1,63 @@
+.offers-section {
+  padding: 60px 40px;
+  background-color: #fffdf7;
+  text-align: center;
+}
+
+.offer-heading {
+  font-size: 2.5rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #E07400;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.offer-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  justify-items: center;
+}
+
+.offer-card {
+  width: 100%;
+  max-width: 430px;
+  height: 260px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.offer-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+}
+
+.offer-card img {
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+  border-bottom: 2px solid #ff5722;
+}
+
+.offer-card p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin: 15px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

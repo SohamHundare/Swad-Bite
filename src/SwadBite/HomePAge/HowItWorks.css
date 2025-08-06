@@ -1,0 +1,54 @@
+.how-it-works {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #FFFBEB;
+}
+
+.how-title {
+  color: #e63946;
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.how-subtitle {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.how-description {
+  max-width: 600px;
+  margin: 0 auto 40px;
+  color: #333;
+}
+
+.how-cards {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.how-card {
+  max-width: 320px;
+  text-align: center;
+}
+
+.how-card img {
+  height: 120px;
+  width: 150px;
+  margin-bottom: 15px;
+}
+
+.how-card h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.how-card p {
+  font-size: 14px;
+  color: #555;
+}
