@@ -42,8 +42,6 @@ function PaymentDetailsPage() {
 
   // Handle Pay Button
   const handlePay = async (e) => {
-
-    
   e.preventDefault();
 
   if (!isFormValid()) {
@@ -54,21 +52,51 @@ function PaymentDetailsPage() {
   setError('');
 
   try {
+    // 1. Save user form data to backend
+    const saveRes = await fetch("http://localhost:5000/api/orders/createorder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+      customerName: formData.name,
+      deliveryAddress: isTakeaway ? "" : `${formData.address}, ${formData.city}, ${formData.pincode}`,
+      isTakeaway: isTakeaway,
+      paymentMethod: "card",
+      totalAmount: 1200,
+      items: [
+        {
+          name: "SwadBite Mess Fee",
+          quantity: 1,
+          price: 1200,
+        },
+    ],
+  }),
+});
+
+
+    const saveData = await saveRes.json();
+
+    if (!saveRes.ok) {
+      throw new Error(saveData.message || "Failed to store user details");
+    }
+
+    // 2. Create Stripe checkout session
     const res = await fetch("http://localhost:5000/api/stripe/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: 1200 * 100 })
+      body: JSON.stringify({ amount: 1200 * 100 }),
     });
 
     const data = await res.json();
 
     const stripe = window.Stripe("pk_test_51RsL62JRAH6EQmuz8uUbQq5NttBJ8BUN4K8YkdFI6wI06pQ8AowdR4Mfxg9FCIGOLAPQKNlbJvJhLbloTcirknMh00XBkKT1Nu");
     stripe.redirectToCheckout({ sessionId: data.id });
+
   } catch (err) {
-    console.error("Stripe error:", err);
-    alert("Payment failed. Try again.");
+    console.error("Payment process error:", err);
+    alert("Payment failed. Please try again.");
   }
 };
+
 
 
   return (

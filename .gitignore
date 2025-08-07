@@ -28,7 +28,7 @@ node_modules/
 
 # Logs
 logs
-*.log
+*.log  
 
 # Build output
 dist/

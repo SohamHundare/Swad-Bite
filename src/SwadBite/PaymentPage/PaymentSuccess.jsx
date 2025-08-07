@@ -1,19 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CheckBadgeIcon } from '@heroicons/react/24/solid';
 import bgImage from '../Images/MessImage.png';
 import logo from '../Images/Logo.png';
 import Footer from './Footer';
 
 function PaymentSuccess() {
+  useEffect(() => {
+    const orderData = JSON.parse(localStorage.getItem('swadbite_order'));
+
+    if (orderData) {
+      fetch("http://localhost:5000/api/orders/createorder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(orderData)
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("✅ Order saved to database:", data);
+          localStorage.removeItem("swadbite_order"); // clear after saving
+        })
+        .catch(err => {
+          console.error("❌ Error saving order:", err);
+        });
+    }
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-gray-50 overflow-hidden font-sans">
       <div
         className="absolute top-0 left-0 w-full h-80 bg-cover bg-center blur-sm brightness-75 z-0"
         style={{ backgroundImage: `url(${bgImage})` }}
       ></div>
-
-      {/* <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-100 rounded-full blur-2xl opacity-40 z-0"></div>
-      <div className="absolute -bottom-14 -right-14 w-28 h-28 bg-yellow-100 rounded-full blur-2xl opacity-40 z-0"></div> */}
 
       <div className="relative z-10 max-w-3xl mx-auto px-6 pt-20 pb-16 text-center">
         <div className="bg-white shadow-2xl rounded-xl p-10 transition-transform duration-300 hover:scale-[1.01]">
@@ -26,7 +45,6 @@ function PaymentSuccess() {
             Thank you for your order. Your transaction has been completed successfully. A confirmation email and receipt have been sent to your registered email.
           </p>
 
-          {/* Logo Section */}
           <div className="mt-6 animate-float">
             <img
               src={logo}
@@ -46,14 +64,14 @@ function PaymentSuccess() {
           </button>
         </div>
 
-        {/* Footer */}
         <footer className="mt-10 text-xs text-gray-400 hover:text-gray-600 transition-colors duration-300">
           © 2025 Swad-Bite. All rights reserved.
         </footer>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
 
 export default PaymentSuccess;
+

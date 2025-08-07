@@ -18,7 +18,7 @@ router.post("/create-checkout-session", async (req, res) => {
             product_data: {
               name: "SwadBite Mess Fee",
             },
-            unit_amount: amount, 
+            unit_amount: amount,
           },
           quantity: 1,
         },
