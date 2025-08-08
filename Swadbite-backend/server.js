@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const app = express();
-const paymentRoutes = require("./routes/stripeRoutes");
+// const paymentRoutes = require("./routes/stripeRoutes");
 
 app.use(cors());
 app.use(express.json());

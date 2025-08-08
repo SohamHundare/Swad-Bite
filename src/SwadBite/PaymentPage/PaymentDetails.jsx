@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 import bgImage from '../Images/MessImage.png';
 import foodImg from '../Images/foodImg.png';
 import secureImg from './Secure.png';
@@ -9,7 +7,6 @@ import Footer from './Footer';
 function PaymentDetailsPage() {
   const [isTakeaway, setIsTakeaway] = useState(false);
   const isLoggedIn = false;
-  const navigate = useNavigate();
   const [error, setError] = useState('');
 
   const [formData, setFormData] = useState({
@@ -24,13 +21,10 @@ function PaymentDetailsPage() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Validation function
   const isFormValid = () => {
     if (isTakeaway) {
-      // Only name and phone required for takeaway
       return formData.name && formData.phone;
     }
-    // All fields required for delivery
     return (
       formData.name &&
       formData.phone &&
@@ -40,26 +34,21 @@ function PaymentDetailsPage() {
     );
   };
 
-  // Handle Pay Button
   const handlePay = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!isFormValid()) {
-    setError('Please fill all required fields.');
-    return;
-  }
+    if (!isFormValid()) {
+      setError('Please fill all required fields.');
+      return;
+    }
 
-  setError('');
+    setError('');
 
-  try {
-    // 1. Save user form data to backend
-    const saveRes = await fetch("http://localhost:5000/api/orders/createorder", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    // 1️⃣ Save order data to localStorage (for later use in PaymentSuccess)
+    const order = {
       customerName: formData.name,
       deliveryAddress: isTakeaway ? "" : `${formData.address}, ${formData.city}, ${formData.pincode}`,
-      isTakeaway: isTakeaway,
+      isTakeaway,
       paymentMethod: "card",
       totalAmount: 1200,
       items: [
@@ -68,48 +57,39 @@ function PaymentDetailsPage() {
           quantity: 1,
           price: 1200,
         },
-    ],
-  }),
-});
+      ],
+    };
 
+    localStorage.setItem("swadbite_order", JSON.stringify(order));
 
-    const saveData = await saveRes.json();
+    try {
+      // 2️⃣ Create Stripe Checkout session
+      const res = await fetch("http://localhost:5000/api/stripe/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: 1200 * 100 }),
+      });
 
-    if (!saveRes.ok) {
-      throw new Error(saveData.message || "Failed to store user details");
+      const data = await res.json();
+
+      const stripe = window.Stripe("pk_test_51RsL62JRAH6EQmuz8uUbQq5NttBJ8BUN4K8YkdFI6wI06pQ8AowdR4Mfxg9FCIGOLAPQKNlbJvJhLbloTcirknMh00XBkKT1Nu");
+      stripe.redirectToCheckout({ sessionId: data.id });
+
+    } catch (err) {
+      console.error("Payment process error:", err);
+      alert("Payment failed. Please try again.");
     }
-
-    // 2. Create Stripe checkout session
-    const res = await fetch("http://localhost:5000/api/stripe/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: 1200 * 100 }),
-    });
-
-    const data = await res.json();
-
-    const stripe = window.Stripe("pk_test_51RsL62JRAH6EQmuz8uUbQq5NttBJ8BUN4K8YkdFI6wI06pQ8AowdR4Mfxg9FCIGOLAPQKNlbJvJhLbloTcirknMh00XBkKT1Nu");
-    stripe.redirectToCheckout({ sessionId: data.id });
-
-  } catch (err) {
-    console.error("Payment process error:", err);
-    alert("Payment failed. Please try again.");
-  }
-};
-
-
+  };
 
   return (
     <div className="relative min-h-screen bg-gray-50 overflow-hidden font-sans">
       <div
-        className="absolute top-0 left-0 w-full h-80 bg-cover bg-center blur-sm brightness-75 z-0 "
+        className="absolute top-0 left-0 w-full h-80 bg-cover bg-center blur-sm brightness-75 z-0"
         style={{ backgroundImage: `url(${bgImage})` }}
       ></div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 pt-12 pb-20 ">
-    
+      <div className="relative z-10 max-w-6xl mx-auto px-4 pt-12 pb-20">
         <div className="bg-white shadow-xl rounded-xl p-6 md:flex md:gap-8">
-        
           <div className="hidden md:flex w-1/2 justify-center items-center min-h-[550px]">
             <img src={foodImg} alt="Food" className="w-100 object-contain rounded-xl animate-float" />
           </div>
@@ -159,6 +139,7 @@ function PaymentDetailsPage() {
                   className="w-full mt-1 p-2 text-sm border rounded-md focus:ring-2 focus:ring-indigo-400 outline-none"
                 />
               </div>
+
               {!isTakeaway && (
                 <>
                   <div>
@@ -193,26 +174,16 @@ function PaymentDetailsPage() {
                 </>
               )}
 
-              {/* Pay Button */}
-              {/* <button
-                type="submit"
-                className="mt-5 w-full bg-amber-500 hover:bg-amber-600 text-white py-2.5 rounded-md text-base transition transform hover:scale-[1.02] duration-300 shadow"
-              >
-                Proceed to Pay ₹1,200
-              </button> */}
               <button type="submit" className="primary-btn w-full">
                 Confirm & Pay ₹1,200
               </button>
-
             </form>
 
-            {/* Secure Info */}
             <div className="mt-6 text-center">
               <p className="text-gray-500 text-sm">Your payment is secured with 256-bit encryption</p>
               <img src={secureImg} alt="Secure" className="mx-auto mt-2 w-24" />
             </div>
 
-            {/* Help */}
             <div className="mt-5 text-center text-sm">
               <p className="text-gray-500">Need help with payment?</p>
               <a href="/support" className="text-indigo-600 hover:underline font-medium">
@@ -220,16 +191,14 @@ function PaymentDetailsPage() {
               </a>
             </div>
 
-            {/* Footer */}
             <footer className="mt-10 border-t pt-4 text-center text-xs text-gray-400">
               © 2025 Swad-Bite. All rights reserved.
             </footer>
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
-    
   );
 }
 

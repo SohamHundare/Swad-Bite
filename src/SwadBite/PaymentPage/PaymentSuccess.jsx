@@ -6,25 +6,37 @@ import Footer from './Footer';
 
 function PaymentSuccess() {
   useEffect(() => {
-    const orderData = JSON.parse(localStorage.getItem('swadbite_order'));
+  const orderData = JSON.parse(localStorage.getItem("swadbite_order"));
+  const alreadySaved = localStorage.getItem("swadbite_saved");
 
-    if (orderData) {
-      fetch("http://localhost:5000/api/orders/createorder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(orderData)
+  if (orderData && !alreadySaved) {
+    localStorage.setItem("swadbite_saved", "true"); // move this BEFORE fetch
+
+    fetch("http://localhost:5000/api/orders/createorder", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("✅ Order saved to database:", data);
+        localStorage.removeItem("swadbite_order");
       })
-        .then(res => res.json())
-        .then(data => {
-          console.log("✅ Order saved to database:", data);
-          localStorage.removeItem("swadbite_order"); // clear after saving
-        })
-        .catch(err => {
-          console.error("❌ Error saving order:", err);
-        });
-    }
+      .catch((err) => {
+        console.error("❌ Error saving order:", err);
+        localStorage.removeItem("swadbite_saved"); // allow retry on failure
+      });
+  }
+}, []);
+
+
+  // Optional cleanup: remove flag when leaving the page
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem("swadbite_saved");
+    };
   }, []);
 
   return (
@@ -68,10 +80,10 @@ function PaymentSuccess() {
           © 2025 Swad-Bite. All rights reserved.
         </footer>
       </div>
+
       <Footer />
     </div>
   );
 }
 
 export default PaymentSuccess;
-
