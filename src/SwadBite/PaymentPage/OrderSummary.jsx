@@ -1,6 +1,15 @@
 import React from 'react';
 
 function OrderSummary() {
+
+  const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
+  const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+
+  const price = plan?.price || meal?.price || 0;
+  const gst = +(price * 0.18).toFixed(2);
+  const maintenance = 20;
+  const total = +(price + gst + maintenance).toFixed(2);
+  
   return (
     <div className="space-y-6">
       <div className="bg-white rounded-xl shadow-md overflow-hidden transition duration-200 hover:scale-105">
@@ -9,16 +18,20 @@ function OrderSummary() {
         </div>
         <div className="p-6 space-y-4">
           <div className="flex justify-between text-gray-600">
-            <span>Base Fee</span><span>₹1,000.00</span>
+            <span>Base Fee</span>
+            <span>₹{price}</span>
           </div>
           <div className="flex justify-between text-gray-600">
-            <span>GST (18%)</span><span>₹180.00</span>
+            <span>GST (18%)</span>
+            <span>₹{gst}</span>
           </div>
           <div className="flex justify-between text-gray-600">
-            <span>Maintenance</span><span>₹20.00</span>
+            <span>Maintenance</span>
+            <span>₹{maintenance.toFixed(2)}</span>
           </div>
           <div className="flex justify-between font-semibold border-t pt-4">
-            <span>Total</span><span className="text-indigo-600 font-bold">₹1,200.00</span>
+            <span>Total</span>
+            <span className="text-indigo-600 font-bold">₹{total}</span>
           </div>
         </div>
       </div>

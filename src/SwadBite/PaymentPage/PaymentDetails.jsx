@@ -5,6 +5,15 @@ import secureImg from './Secure.png';
 import Footer from './Footer';
 
 function PaymentDetailsPage() {
+
+  const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
+  const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+
+  const price = plan?.price || meal?.price || 0;
+  const gst = +(price * 0.18).toFixed(2);
+  const maintenance = 20;
+  const total = +(price + gst + maintenance).toFixed(2);                                              
+
   const [isTakeaway, setIsTakeaway] = useState(false);
   const isLoggedIn = false;
   const [error, setError] = useState('');
@@ -50,12 +59,12 @@ function PaymentDetailsPage() {
       deliveryAddress: isTakeaway ? "" : `${formData.address}, ${formData.city}, ${formData.pincode}`,
       isTakeaway,
       paymentMethod: "card",
-      totalAmount: 1200,
+      totalAmount: total ,
       items: [
         {
-          name: "SwadBite Mess Fee",
+          name: meal?.name || plan?.name || "Unknown Meal" ,
           quantity: 1,
-          price: 1200,
+          price:  total ,
         },
       ],
     };
@@ -67,7 +76,7 @@ function PaymentDetailsPage() {
       const res = await fetch("http://localhost:5000/api/stripe/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: 1200 * 100 }),
+        body: JSON.stringify({ amount: total * 100 }),
       });
 
       const data = await res.json();
@@ -175,7 +184,7 @@ function PaymentDetailsPage() {
               )}
 
               <button type="submit" className="primary-btn w-full">
-                Confirm & Pay ₹1,200
+                Confirm & Pay ₹{total}
               </button>
             </form>
 

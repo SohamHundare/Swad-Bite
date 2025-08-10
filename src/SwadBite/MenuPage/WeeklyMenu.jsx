@@ -163,6 +163,33 @@ export default function Menu() {
 
   const selectedItem = items[selectedIndex] || null;
   const navigate = useNavigate();
+
+
+  const handleOrderNow = (mealType, mealName) => {
+  const dish = items.find(item => item.name === mealName && item.day === selectedItem.day);
+  if (!dish) return;
+
+  localStorage.setItem(
+    "swadbite_selectedMeal",
+    JSON.stringify({
+      mealType,
+      mealName,
+      price: dish.price,
+      day: dish.day,
+      image: dish.image,
+      description: dish.description,
+    })
+  );
+
+  navigate("/payment");
+};
+
+useEffect(() => {
+  // Optionally clear both on mount
+  localStorage.removeItem("swadbite_selectedMeal");
+  localStorage.removeItem("swadbite_selectedPlan");
+}, []);
+
   return (
     <>
     <Navbar/>
@@ -170,7 +197,7 @@ export default function Menu() {
       <style>{`
         :root { --amber-500: #f59e0b; --bg: #fffaf0; --card: #fff8ea; --text: #4b3e2b; }
         * { box-sizing: border-box; }
-        body { margin: 0; font-family: 'Segoe UI', Roboto, Arial; background: #fdf6e3; }
+        body { margin-top: 6rem; font-family: 'Segoe UI', Roboto, Arial; background: #fdf6e3; }
 
         .weekly-menu-root { max-width: 1100px; margin: 20px auto; padding: 18px; background: var(--bg); color: var(--text); border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
 
@@ -211,6 +238,7 @@ export default function Menu() {
           background: #fff4d9;
           border-top: 2px solid #e1c78f;
           text-align: center;
+          
         }
 
         .subscription-title {
@@ -363,9 +391,10 @@ export default function Menu() {
               <div className="actions">
                 <button
                   className="subscribe"
-                  onClick={() =>
-                    navigate('/payment')
-                  }
+                  onClick={() => {
+                  localStorage.removeItem("swadbite_selectedPlan");
+                  handleOrderNow(selectedMeal, selectedItem.name);
+                }}
                 >
                   Subscribe
                 </button>
@@ -388,7 +417,24 @@ export default function Menu() {
               <li>✔ 7 Days Access</li>
               <li>✔ Home-Style Meals</li>
             </ul>
-            <button onClick={() => navigate('/payment')}>Subscribe</button>
+            <button
+                onClick={() => {
+                  localStorage.removeItem("swadbite_selectedMeal");
+                  localStorage.setItem(
+                    "swadbite_selectedPlan",
+                    JSON.stringify({
+                      plan: "Basic",
+                      price: 799,
+                      meals: "Breakfast Only",
+                      duration: "7 Days",
+                      details: "Home-Style Meals",
+                    })
+                  );
+                  navigate('/payment');
+                }}
+              >
+                Subscribe
+          </button>
           </div>
 
           <div className="subscription-card standard">
@@ -399,7 +445,24 @@ export default function Menu() {
               <li>✔ 7 Days Access</li>
               <li>✔ Fresh Ingredients</li>
             </ul>
-            <button onClick={() => navigate('/payment')}>Subscribe</button>
+            <button
+              onClick={() => {
+                localStorage.removeItem("swadbite_selectedMeal");
+                localStorage.setItem(
+                  "swadbite_selectedPlan",
+                  JSON.stringify({
+                    plan: "Standard",
+                    price: 1299,
+                    meals: "Lunch + Dinner",
+                    duration: "7 Days",
+                    details: "Fresh Ingredients",
+                  })
+                );
+                navigate('/payment');
+              }}
+            >
+              Subscribe
+            </button>
           </div>
 
           <div className="subscription-card premium">
@@ -410,7 +473,24 @@ export default function Menu() {
               <li>✔ 7 Days Access</li>
               <li>✔ Priority Service</li>
             </ul>
-            <button onClick={() => navigate('/payment')}>Subscribe</button>
+            <button
+              onClick={() => {
+                localStorage.removeItem("swadbite_selectedMeal");
+                localStorage.setItem(
+                  "swadbite_selectedPlan",
+                  JSON.stringify({
+                    plan: "Premium",
+                    price: 1799,
+                    meals: "All 3 Meals",
+                    duration: "7 Days",
+                    details: "Priority Service",
+                  })
+                );
+                navigate('/payment');
+              }}
+            >
+              Subscribe
+            </button>
           </div>
         </div>
       </div>

@@ -17,6 +17,17 @@ function PaymentForm(props) {
   const [selectedBank, setSelectedBank] = useState(''); 
   const [errorMessage, setErrorMessage] = useState('');
 
+
+  //fetching price from local storage
+
+  const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
+  const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+
+  const price = plan?.price || meal?.price || 0;
+  const gst = +(price * 0.18).toFixed(2);
+  const maintenance = 20;
+  const total = +(price + gst + maintenance).toFixed(2);
+
   // UPI validation
   function checkUpiValid() {
     if (!upiInput.includes('@')) {
@@ -131,7 +142,7 @@ function PaymentForm(props) {
             className="primary-btn w-full"
             onClick={payWithUpi}
           >
-            <i className="fas fa-external-link-alt mr-2" /> Open UPI App
+            <i className="fas fa-external-link-alt mr-2" /> Pay ₹{total}
           </button>
           {/* <button onClick={handleRazorpayPayment} className="primary-btn w-full">
             Pay ₹1,200.00 via Razorpay
@@ -195,7 +206,7 @@ function PaymentForm(props) {
             className="primary-btn w-full"
             onClick={payWithCard}
           >
-            Pay ₹1,200.00
+            Pay ₹{total}
           </button>
           {/* <button onClick={handleRazorpayPayment} className="primary-btn w-full">
             Pay ₹1,200.00 via Razorpay
@@ -242,7 +253,7 @@ function PaymentForm(props) {
             className="primary-btn w-full"
             onClick={payWithNetBanking}
           >
-            Pay ₹1,200.00
+            Pay ₹{total}
           </button>
 
           <p className="text-xs text-gray-500 text-center">
