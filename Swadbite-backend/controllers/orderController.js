@@ -1,6 +1,4 @@
-
-const Order = require("../models/Order");
-
+import Order from "../models/Order.js";
 const createOrder = async (req, res) => {
   try {
     const { customerName, deliveryAddress, isTakeaway, paymentMethod, totalAmount, items } = req.body;
@@ -35,7 +33,4 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-module.exports = {
-  createOrder,
-  getAllOrders,
-};
+export{createOrder,getAllOrders};
