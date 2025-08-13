@@ -2,15 +2,19 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose"); 
 require("dotenv").config();
+const testimonialRoutes = require('./routes/testimonialRoutes');
 
 const app = express();
-// const paymentRoutes = require("./routes/stripeRoutes");
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({limit:'10mb'}));
 
+// Existing routes
 app.use("/api/stripe", require("./routes/stripeRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
+
+// Add this line for testimonials API
+app.use("/api/testimonials", testimonialRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

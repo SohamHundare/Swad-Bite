@@ -21,11 +21,11 @@ function PaymentSuccess() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("✅ Order saved to database:", data);
+        console.log("Order saved to database:", data);
         localStorage.removeItem("swadbite_order");
       })
       .catch((err) => {
-        console.error("❌ Error saving order:", err);
+        console.error("Error saving order:", err);
         localStorage.removeItem("swadbite_saved"); // allow retry on failure
       });
   }

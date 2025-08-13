@@ -25,7 +25,7 @@ function PaymentForm(props) {
 
   const price = plan?.price || meal?.price || 0;
   const gst = +(price * 0.18).toFixed(2);
-  const maintenance = 20;
+  const maintenance = +(price * 0.02).toFixed(2);
   const total = +(price + gst + maintenance).toFixed(2);
 
   // UPI validation

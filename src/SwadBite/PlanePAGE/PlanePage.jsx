@@ -3,7 +3,6 @@ import { FaCalendarAlt } from 'react-icons/fa';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-import NavBar from '../HomePAge/Navbar'; 
 
 
 
