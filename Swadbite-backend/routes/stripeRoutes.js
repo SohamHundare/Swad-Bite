@@ -1,6 +1,6 @@
-import express from "express";
-import Stripe from "stripe";
-import dotenv from "dotenv";
+const express = require("express");
+const Stripe = require("stripe");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -38,4 +38,4 @@ router.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

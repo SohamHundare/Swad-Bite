@@ -1,4 +1,4 @@
-import Feedback from '../models/Feedback.js';
+const Feedback = require("../models/Feedback");
 
   const submitFeedback = async (req, res) => {
   try {
@@ -31,4 +31,4 @@ const getFeedback = async (req, res) => {
   }
 };
 
-export{submitFeedback,getFeedback};
+module.exports = { submitFeedback, getFeedback };

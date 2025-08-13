@@ -43,25 +43,6 @@ const Hero = () => {
     }));
   };
 
-  
-
-  // Safe lowercase & trim helper
-  // const safeLower = (str) => (str ? str.trim().toLowerCase() : "");
-
-  // Search button handler
-  // const handleSearch = (e) => {
-  //   e.preventDefault();
-
-  //   // Navigate to Explore page with filters in query params
-  //   navigate(
-  //     `/explore?city=${encodeURIComponent(safeLower(formData.city))}` +
-  //     `&state=${encodeURIComponent(safeLower(formData.state))}` +
-  //     `&locality=${encodeURIComponent(safeLower(formData.locality))}` +
-  //     `&gender=${encodeURIComponent(safeLower(formData.gender))}` +
-  //     `&category=${encodeURIComponent(safeLower(formData.category))}`
-  //   );
-  // };
-
 const handleSearch = (e) => {
   e.preventDefault();
   localStorage.setItem("selectedCity", formData.city.trim().toLowerCase());
