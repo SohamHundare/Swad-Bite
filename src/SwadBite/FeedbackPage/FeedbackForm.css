@@ -1,10 +1,12 @@
 .feedback-page {
+   position: relative; /* important so it layers properly */
   font-family: 'Segoe UI', sans-serif;
-  background-image: url('../Images/foodImg.png');  /* ✅ Make sure this path is correct */
+  background-image: url('../Images/foodImg.png'); /* ✅ path must be correct */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  min-height: 100vh;
+  min-height: 120vh; /* ensures it always fills viewport height */
+  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -13,7 +15,7 @@
   max-width: 750px;
   margin: 100px auto;
   padding: 30px 40px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   border-radius: 16px;
   backdrop-filter: blur(12px);

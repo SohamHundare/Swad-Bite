@@ -1,6 +1,7 @@
 //import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 
+<<<<<<< HEAD
 import WelcomePage from "./SwadBite/StartingPages/WelcomePage";
 import LoginModal from "./SwadBite/StartingPages/LoginPage";
 import SignUpModal from "./SwadBite/StartingPages/SignUpPage";
@@ -12,6 +13,21 @@ import WeeklyMenu from "./SwadBite/MenuPage/WeeklyMenu";
 import Order from "./SwadBite/OrdersPage/Order";
 import FeedbackForm from "./SwadBite/FeedbackPage/FeedbackForm";
 import WeeklyMenuModal from "./SwadBite/StartingPages/WeeklyMenu1";
+=======
+import WelcomePage from "./SwadBite/StartingPages/WelcomePage.jsx";
+import LoginModal from "./SwadBite/StartingPages/LoginPage.jsx";
+import SignUpModal from "./SwadBite/StartingPages/SignUpPage.jsx";
+import PlanPage from "./SwadBite/PlanePAGE/PlanePage.jsx";
+
+
+import PaymentMain from "./SwadBite/PaymentPage/PaymentMain.jsx";
+import CurtainIntro from "./SwadBite/HomePAge/CurtainIntro.jsx";
+import Explore from "./SwadBite/ExplorePage/Explore.jsx";
+import WeeklyMenu from "./SwadBite/MenuPage/WeeklyMenu.jsx";
+import Order from "./SwadBite/OrdersPage/Order.jsx";
+import FeedbackForm from "./SwadBite/FeedbackPage/FeedbackForm.jsx";
+import WeeklyMenuModal from "./SwadBite/StartingPages/WeeklyMenu1.jsx";
+>>>>>>> af750bba76d2ef5c61141da24e9426c7e4a78728
 
 import './App.css';
 
