@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import bgImage from '../Images/MessImage.png';
 import foodImg from '../Images/foodImg.png';
 import secureImg from './Secure.png';
-import Footer from './Footer';
+
 
 function PaymentDetailsPage() {
 
@@ -206,7 +206,7 @@ function PaymentDetailsPage() {
           </div>
         </div>
       </div>
-      <Footer />
+    
     </div>
   );
 }

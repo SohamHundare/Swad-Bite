@@ -91,36 +91,28 @@ const handleSearch = (e) => {
         </div>
 
         {/* Search Form */}
-        <form
-          className="mt-10 bg-white rounded-xl shadow-lg px-6 py-3 flex flex-wrap md:flex-nowrap gap-4 items-center"
-          onSubmit={handleSearch}
-        >
-          {/* State */}
-          <select
-            className="flex-1 min-w-[120px] border border-gray-300 rounded-md px-3 py-1.5 text-sm"
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-          >
-            <option value="">state</option>
-            <option value="maharashtra">maharashtra</option>
-            <option value="gujarat">gujarat</option>
-            <option value="karnataka">karnataka</option>
-            <option value="delhi">delhi</option>
-            <option value="tamilnadu">tamil Nadu</option>
-            <option value="other">other</option>
-          </select>
-
-          {/* City */}
+       <form
+  className="mt-10 bg-white rounded-xl shadow-lg px-6 py-3 flex flex-wrap md:flex-nowrap gap-4 items-center"
+  onSubmit={handleSearch}
+>
+  <select
+    className="flex-1 min-w-[120px] border border-gray-300 rounded-md px-3 py-1.5 text-sm appearance-none bg-gray-100 cursor-not-allowed"
+    name="state"
+    value="maharashtra"
+    disabled
+  >
+    <option value="maharashtra">Maharashtra</option>
+  </select>
+      {/* City */}
           <select
             className="flex-1 min-w-[120px] border border-gray-300 rounded-md px-3 py-1.5 text-sm"
             name="city"
             value={formData.city}
             onChange={handleChange}
           >
-            <option value="">city</option>
-            <option value="mumbai">Mumbai</option>
-            <option value="pune">pune</option>
+            <option value="">City</option>
+            <option value="mumbai">Satara</option>
+            <option value="pune">Pune</option>
             <option value="ahmedabad">Ahmedabad</option>
             <option value="bengaluru">Bengaluru</option>
             <option value="delhi">Delhi</option>
@@ -145,7 +137,7 @@ const handleSearch = (e) => {
             value={formData.gender}
             onChange={handleChange}
           >
-            <option value="">gender</option>
+            <option value="">Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
@@ -158,7 +150,7 @@ const handleSearch = (e) => {
             value={formData.category}
             onChange={handleChange}
           >
-            <option value="">category</option>
+            <option value="">Category</option>
             <option value="veg">Veg</option>
             <option value="nonveg">Non-Veg</option>
             <option value="jain">Jain</option>

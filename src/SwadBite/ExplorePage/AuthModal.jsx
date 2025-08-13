@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ScrollImages from './ScrollImages';
 import './AuthModal.css';
 
+
 const offerMeals = [
   {
     image: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092",
@@ -101,7 +102,7 @@ const AuthModal = ({ offer, onClose }) => {
                 </div>
               ))}
             </div>
-            <button className="order-now-btn"> Order Now</button>
+           
           </div>
         )}
       </div>

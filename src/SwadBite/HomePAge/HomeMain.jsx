@@ -4,7 +4,7 @@ import Hero from './Hero';
 import About from './About';
 import MapSection from './MapSection';
 import Testimonials from './Testimonals';
-import Footer from './Footer';
+
 import About2 from './About2';
 import HowItWorks from './HowItWorks';
 import Chatbot from './Chatbot';
@@ -21,7 +21,7 @@ function HomeMain() {
       <HowItWorks/>
       <About2/>
       <Testimonials/>
-      <Footer/>
+    
       <HandelComForm/>
       <Chatbot />
     </div>

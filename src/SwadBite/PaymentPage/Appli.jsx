@@ -3,7 +3,6 @@ import './styles.css';
 import Header from './Header';
 import PaymentForm from './PaymentForm';
 import OrderSummary from './OrderSummary';
-import Footer from './Footer';
 import SecurePayment from './SecurePayment';
 import NeedHelp from './NeedHelp';
 import Navbar from '../HomePAge/Navbar';
@@ -37,7 +36,6 @@ function Appli() {
 
       </main>
 
-      <Footer />
     </div>
   );
 }

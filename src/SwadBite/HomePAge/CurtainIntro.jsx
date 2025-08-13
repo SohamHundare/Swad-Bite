@@ -8,24 +8,32 @@ export default function CurtainIntro() {
   const [showCurtain, setShowCurtain] = useState(false);
 
   useEffect(() => {
+    // Check if user has already seen the curtain
     const hasSeenCurtain = localStorage.getItem("hasSeenCurtain");
 
     if (!hasSeenCurtain) {
+      // First time → show curtain
       setShowCurtain(true);
+
       const timer = setTimeout(() => {
+        // After animation, show home and mark curtain as seen
+        setShowCurtain(false);
         setShowHome(true);
         localStorage.setItem("hasSeenCurtain", "true");
       }, 6000);
+
       return () => clearTimeout(timer);
     } else {
-      // Already seen curtain → directly show home
+      // Already seen → directly show home
       setShowHome(true);
     }
   }, []);
 
+  // Render HomeMain after curtain
   if (showHome) return <HomeMain />;
 
-  if (!showCurtain) return null; // Don't render curtain again
+  // Render curtain only if it needs to show
+  if (!showCurtain) return null;
 
   return (
     <div className="curtain-container">

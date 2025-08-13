@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { CheckBadgeIcon } from '@heroicons/react/24/solid';
 import bgImage from '../Images/MessImage.png';
 import logo from '../Images/Logo.png';
-import Footer from './Footer';
+
 
 function PaymentSuccess() {
   useEffect(() => {
@@ -81,7 +81,7 @@ function PaymentSuccess() {
         </footer>
       </div>
 
-      <Footer />
+    
     </div>
   );
 }

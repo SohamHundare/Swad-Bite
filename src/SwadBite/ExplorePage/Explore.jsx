@@ -6,6 +6,7 @@ import "../ExplorePage/Explore.css";
 import Offers from "../ExplorePage/Offers";
 import Navbar from "../HomePAge/Navbar";
 import { useNavigate } from "react-router-dom";
+import NotFoundMsg from "./NotFoundMsg";
 
 const messes = [
  {
@@ -198,6 +199,7 @@ const messes = [
     map: "https://maps.google.com/?q=Taste+of+South+Wakad",
   },
 
+
 ];
 
 const Explore = () => {
@@ -238,32 +240,49 @@ const Explore = () => {
         📍 Discover the Best Messes Around Pune
       </div>
 
-      <div className="explore-container">
-        {filteredMesses.map((mess, index) => {
-          const column = index % 3;
-          const animation =
-            column === 0 ? "fade-right" : column === 1 ? "fade-up" : "fade-left";
+      {filteredMesses.length === 0 ? (
+        <div style={{ textAlign: "center", marginTop: "40px" }}>
+          <NotFoundMsg /> {/* animated message */}
+        </div>
+      ) : (
+        <div className="explore-container">
+          {filteredMesses.map((mess, index) => {
+            const column = index % 3;
+            const animation =
+              column === 0
+                ? "fade-right"
+                : column === 1
+                ? "fade-up"
+                : "fade-left";
 
-          return (
-            <div key={index} className="explore-card" onClick={() => {navigate("/WeeklyMenu")}} data-aos={animation}>
-              <img src={mess.image} alt={mess.name} />
-              <div className="explore-card-content">
-                <div className="explore-mess-name">{mess.name}</div>
-                <div className="explore-mess-location">{mess.location}</div>
-                <div className="rating">{mess.rating}</div>
-                <a
-                  className="explore-map-link"
-                  href={mess.map}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  📍 View on Map
-                </a>
+            return (
+              <div
+                key={index}
+                className="explore-card"
+                onClick={() => {
+                  navigate("/WeeklyMenu");
+                }}
+                data-aos={animation}
+              >
+                <img src={mess.image} alt={mess.name} />
+                <div className="explore-card-content">
+                  <div className="explore-mess-name">{mess.name}</div>
+                  <div className="explore-mess-location">{mess.location}</div>
+                  <div className="rating">{mess.rating}</div>
+                  <a
+                    className="explore-map-link"
+                    href={mess.map}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    📍 View on Map
+                  </a>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
 
       <Offers />
     </>
