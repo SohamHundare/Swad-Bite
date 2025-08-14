@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import heroImage from '../Images/foodImg.png';
+import FoodVideo from '../Images/FoodVideo.mp4';
 import aboutVideo from '../Images/Video.mp4';
 import { useNavigate } from 'react-router-dom';
 
@@ -82,11 +82,16 @@ const handleSearch = (e) => {
 
           {/* Right Side */}
           <div className="md:w-1/2 flex justify-center">
-            <img
-              src={heroImage}
-              alt="Delicious food"
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
               className="rounded-xl shadow-xl w-full max-w-md"
-            />
+            >
+              <source src={FoodVideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
 

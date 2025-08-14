@@ -11,7 +11,7 @@ import WeeklyMenu from "./SwadBite/MenuPage/WeeklyMenu.jsx";
 import Order from "./SwadBite/OrdersPage/Order.jsx";
 import FeedbackForm from "./SwadBite/FeedbackPage/FeedbackForm.jsx";
 import WeeklyMenuModal from "./SwadBite/StartingPages/WeeklyMenu1.jsx";
-import Footer from "./SwadBite/PaymentPage/Footer.jsx";
+import Footer from "../src/SwadBite/HomePAge/Footer.jsx";
 
 import './App.css';
 
