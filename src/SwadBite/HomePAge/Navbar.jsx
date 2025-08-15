@@ -78,6 +78,7 @@ const Navbar = ({ onTriggerCurtain }) => {
               { path: "/order", label: "Order" },
               { path: "/plans", label: "Plans" },
               { path: "/login", label: "Login" },
+              { path: "/cart", label: <FontAwesomeIcon icon={faShoppingCart} size="lg" />},
             ].map((item) => (
               <Link
                 key={item.path}
