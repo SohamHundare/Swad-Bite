@@ -3,11 +3,7 @@ import { FaCalendarAlt } from 'react-icons/fa';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-
-
-
 const PlanPage = ({ user }) => {
-  const [activeLink, setActiveLink] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -23,10 +19,6 @@ const PlanPage = ({ user }) => {
   const daysUsed = (currentDate - planStartDate) / (1000 * 60 * 60 * 24);
   const remainingDays = Math.max(totalDays - daysUsed, 0);
   const progressPercent = Math.round((daysUsed / totalDays) * 100);
-
-  const handleNavClick = (link) => {
-    setActiveLink(link);
-  };
 
   const handleCalendarClick = () => {
     setShowCalendar(prev => !prev);
@@ -44,111 +36,55 @@ const PlanPage = ({ user }) => {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes slideInLeft {
-          from { transform: translateX(-50px); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
-        }
-
         @keyframes growProgressSlow {
           from { width: 0%; }
           to { width: ${progressPercent}%; }
         }
-
         .container {
-  position: relative;
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-image: url('https://wallpapers.com/images/hd/food-photography-background-kepimuxrxth4bjjw.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: blur(5px);
-  opacity: 0.7;
-  z-index: -1;
-}
-
-
-        // nav {
-        //   background-color: white;
-        //   display: flex;
-        //   justify-content: space-between;
-        //   align-items: center;
-        //   padding: 15px 30px;
-        //   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        //   animation: slideInLeft 1s ease-out;
-        // }
-
-        // nav .logo {
-        //   font-size: 24px;
-        //   font-weight: bold;
-        // }
-
-        // nav .nav-links a {
-        //   margin-left: 20px;
-        //   text-decoration: none;
-        //   color: black;
-        //   font-weight: bold;
-        //   position: relative;
-        //   transition: color 0.3s;
-        // }
-
-        // nav .nav-links a.active {
-        //   color: orange;
-        // }
-
-        // nav .nav-links a::after {
-        //   content: "";
-        //   position: absolute;
-        //   left: 0;
-        //   bottom: -3px;
-        //   width: 0%;
-        //   height: 2px;
-        //   background: orange;
-        //   transition: width 0.3s;
-        // }
-
-        // nav .nav-links a:hover::after {
-        //   width: 100%;
-        // }
-
+          position: relative;
+          font-family: Arial, sans-serif;
+          min-height: 100vh;
+          padding: 0;
+          margin: 0;
+          overflow: hidden;
+          z-index: 0;
+        }
+        .container::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          background-image: url('https://wallpapers.com/images/hd/food-photography-background-kepimuxrxth4bjjw.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          filter: blur(5px);
+          opacity: 0.7;
+          z-index: -1;
+        }
         .main {
           max-width: 1000px;
           margin: 30px auto;
-          background-color:white;
+          background-color: white;
           padding: 30px;
           border-radius: 8px;
           animation: fadeIn 1.2s ease;
           opacity: 0.9;
           box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-
         .header {
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
           flex-wrap: wrap;
         }
-
         .user-info {
           display: flex;
           align-items: center;
           gap: 20px;
         }
-
         .user-info img {
           height: 60px;
           width: 60px;
@@ -156,11 +92,9 @@ const PlanPage = ({ user }) => {
           border: 2px solid black;
           transition: transform 0.3s;
         }
-
         .user-info img:hover {
           transform: scale(1.1);
         }
-
         .right-side {
           display: flex;
           flex-direction: row;
@@ -169,7 +103,6 @@ const PlanPage = ({ user }) => {
           margin-top: 10px;
           position: relative;
         }
-
         .renew-button {
           background-color: orange;
           color: white;
@@ -181,12 +114,10 @@ const PlanPage = ({ user }) => {
           box-shadow: 0 4px 6px rgba(0,0,0,0.1);
           transition: background 0.3s, transform 0.2s;
         }
-
         .renew-button:hover {
           background-color: #ff9933;
           transform: scale(1.05);
         }
-
         .calendar-box {
           background-color: white;
           color: black;
@@ -199,11 +130,9 @@ const PlanPage = ({ user }) => {
           transition: transform 0.2s;
           text-align: center;
         }
-
         .calendar-box:hover {
           transform: scale(1.05);
         }
-
         .calendar-container {
           display: flex;
           flex-direction: column;
@@ -211,7 +140,6 @@ const PlanPage = ({ user }) => {
           gap: 8px;
           margin-top: 5px;
         }
-
         .custom-calendar {
           position: absolute;
           top: 60px;
@@ -223,7 +151,6 @@ const PlanPage = ({ user }) => {
           box-shadow: 0 4px 12px rgba(0,0,0,0.2);
           width: 250px;
         }
-
         .quote {
           margin: 20px 0;
           text-align: center;
@@ -231,14 +158,12 @@ const PlanPage = ({ user }) => {
           opacity: 0;
           animation: fadeIn 2s ease 1s forwards;
         }
-
         .section-title {
           font-size: 20px;
           font-weight: bold;
           color: #A34F00;
           margin-top: 30px;
         }
-
         .progress-bar {
           margin-top: 10px;
           height: 20px;
@@ -246,7 +171,6 @@ const PlanPage = ({ user }) => {
           border-radius: 10px;
           overflow: hidden;
         }
-
         .progress {
           height: 100%;
           background-color: #923f1c;
@@ -257,7 +181,6 @@ const PlanPage = ({ user }) => {
           padding-left: 5px;
           animation: growProgressSlow 4s ease forwards;
         }
-
         .footer-quote {
           margin-top: 30px;
           text-align: center;
@@ -266,41 +189,22 @@ const PlanPage = ({ user }) => {
           opacity: 0.7;
           transition: all 0.5s;
         }
-
         .footer-quote:hover {
           color: #000;
           opacity: 1;
         }
-
         .react-calendar {
           border: none;
           width: 100%;
           font-family: Arial, sans-serif;
           font-size: 14px;
         }
-
         .react-calendar__tile--active {
           background: orange !important;
           color: white !important;
           border-radius: 50%;
         }
       `}</style>
-
-      {/* <nav>
-        <div className="logo">Swaad Bite</div>
-        <div className="nav-links">
-          {['Home', 'Explore', 'Feedback', 'Orders', 'Plans'].map((item) => (
-            <a
-              key={item}
-              href="#"
-              className={activeLink === item ? 'active' : ''}
-              onClick={() => handleNavClick(item)}
-            >
-              {item}
-            </a>
-          ))}
-        </div>
-      </nav> */}
 
       <div className="main">
         <div className="header">

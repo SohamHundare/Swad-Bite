@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Complaint from './Complaint';
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid';
 
