@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FaBars } from "react-icons/fa";
 import logo from "../Images/Logo.png";
 
@@ -50,7 +52,8 @@ const Navbar = ({ onTriggerCurtain }) => {
           <Link to="/feedback" className={linkClasses("/feedback")}>Feedback</Link>
           <Link to="/Order" className={linkClasses("/Order")}>Order</Link>
           <Link to="/plans" className={linkClasses("/plans")}>Plans</Link>
-          <Link to="/login" className={linkClasses("/login")} onClick={handleLoginClick}>Login</Link>
+          <Link to="/login" className={linkClasses("/login")}>Login</Link>
+          <Link to="/Cart" className={linkClasses("/Cart")}> <FontAwesomeIcon icon={faShoppingCart} size="lg" /></Link>
         </div>
 
         {/* Mobile Hamburger */}
