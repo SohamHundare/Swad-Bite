@@ -46,12 +46,14 @@ const menuData = {
 function deterministicPrice(name, mealType) {
   let s = 0;
   for (let i = 0; i < name.length; i++) s = (s * 31 + name.charCodeAt(i)) >>> 0;
+  
   const ranges = {
-    breakfast: [25, 120],
-    lunch: [80, 260],
-    dinner: [100, 400],
+    breakfast: [20, 60],  // Budget-friendly breakfast
+    lunch: [50, 120],     // Practical lunch
+    dinner: [60, 150],    // Affordable dinner
   };
-  const [min, max] = ranges[mealType] || [60, 220];
+  
+  const [min, max] = ranges[mealType] || [40, 100]; // Default range if mealType not found
   return min + (s % (max - min + 1));
 }
 
@@ -163,7 +165,6 @@ export default function Menu() {
 
   const selectedItem = items[selectedIndex] || null;
   const navigate = useNavigate();
-
 
   const handleOrderNow = (mealType, mealName) => {
   const dish = items.find(item => item.name === mealName && item.day === selectedItem.day);
@@ -498,3 +499,4 @@ useEffect(() => {
     </>
   );
 }
+
