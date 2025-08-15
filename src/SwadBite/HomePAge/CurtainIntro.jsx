@@ -1,39 +1,16 @@
-import React, { useEffect, useState } from "react";
-import "./CurtainIntro.css";
+// CurtainIntro.jsx
+import React, { useEffect } from 'react';
+import './CurtainIntro.css';
 import logo from "../Images/Logo.png";
-import HomeMain from "./HomeMain";
 
-export default function CurtainIntro() {
-  const [showHome, setShowHome] = useState(false);
-  const [showCurtain, setShowCurtain] = useState(false);
-
+export default function CurtainIntro({ onFinish }) {
   useEffect(() => {
-    // Check if user has already seen the curtain
-    const hasSeenCurtain = localStorage.getItem("hasSeenCurtain");
+    const timer = setTimeout(() => {
+      if (onFinish) onFinish();
+    }, 6000); 
 
-    if (!hasSeenCurtain) {
-      // First time → show curtain
-      setShowCurtain(true);
-
-      const timer = setTimeout(() => {
-        // After animation, show home and mark curtain as seen
-        setShowCurtain(false);
-        setShowHome(true);
-        localStorage.setItem("hasSeenCurtain", "true");
-      }, 6000);
-
-      return () => clearTimeout(timer);
-    } else {
-      // Already seen → directly show home
-      setShowHome(true);
-    }
-  }, []);
-
-  // Render HomeMain after curtain
-  if (showHome) return <HomeMain />;
-
-  // Render curtain only if it needs to show
-  if (!showCurtain) return null;
+    return () => clearTimeout(timer);
+  }, [onFinish]);
 
   return (
     <div className="curtain-container">
