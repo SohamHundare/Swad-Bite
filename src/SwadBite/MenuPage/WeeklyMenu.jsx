@@ -160,6 +160,7 @@ export default function Menu() {
     return arr;
   }, [selectedMeal]);
 
+  const [cart, setCart] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   useEffect(() => setSelectedIndex(0), [selectedMeal]);
 
@@ -184,6 +185,28 @@ export default function Menu() {
 
   navigate("/payment");
 };
+
+const handleAddToCart = (mealType, mealName) => {
+  const dish = items.find(item => item.name === mealName && item.day === selectedItem.day);
+  if (!dish) return;
+
+  const newCartItem = {
+    mealType,
+    mealName: dish.name,
+    price: dish.price,
+    day: dish.day,
+    image: dish.image,
+    description: dish.description,
+  };
+
+  // Save to localStorage
+  const existingCart = JSON.parse(localStorage.getItem("swadbite_cart") || "[]");
+  localStorage.setItem("swadbite_cart", JSON.stringify([...existingCart, newCartItem]));
+
+  alert(`${dish.name} has been added to your cart!`);
+};
+
+
 
 useEffect(() => {
   // Optionally clear both on mount
@@ -401,6 +424,20 @@ useEffect(() => {
                 </button>
                 <div style={{ color: "#8f7b61", fontSize: "0.95rem" }}>Serves 1 • Home-style</div>
               </div>
+              <br></br>
+               <button className="add-to-cart" style={{
+                    marginTop: '6px',
+                    padding: '4px 10px',
+                    backgroundColor: '#f59e0b',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                    }}
+                onClick={e=>{
+                e.stopPropagation(); // prevents selecting the dish when clicking
+                handleAddToCart(selectedMeal, selectedItem.name); }}>Add to Cart</button>  
             </>
           ) : (
             <p style={{ color: "#7d6a53" }}>Click any dish on the left to see details here.</p>
@@ -436,6 +473,7 @@ useEffect(() => {
               >
                 Subscribe
           </button>
+          
           </div>
 
           <div className="subscription-card standard">
@@ -464,6 +502,7 @@ useEffect(() => {
             >
               Subscribe
             </button>
+           
           </div>
 
           <div className="subscription-card premium">

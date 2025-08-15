@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import logo from "../Images/Logo.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  
 
   const isActive = (path) => location.pathname === path;
 
@@ -43,6 +47,9 @@ const Navbar = () => {
           <Link to="/Order" className={linkClasses("/Order")}>Order</Link>
           <Link to="/plans" className={linkClasses("/plans")}>Plans</Link>
           <Link to="/login" className={linkClasses("/login")}>Login</Link>
+          <Link to="/Cart" className={linkClasses("/Cart")}><FontAwesomeIcon icon={faShoppingCart} size="lg" />
+</Link>
+
         </div>
 
         {/* Mobile Hamburger */}

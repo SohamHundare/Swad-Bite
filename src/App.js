@@ -7,6 +7,7 @@ import PlanPage from "./SwadBite/PlanePAGE/PlanePage.jsx";
 import PaymentMain from "./SwadBite/PaymentPage/PaymentMain.jsx";
 import CurtainIntro from "./SwadBite/HomePAge/CurtainIntro.jsx";
 import Explore from "./SwadBite/ExplorePage/Explore.jsx";
+import Cart from "./SwadBite/CartPage/Cart.jsx";
 import WeeklyMenu from "./SwadBite/MenuPage/WeeklyMenu.jsx";
 import Order from "./SwadBite/OrdersPage/Order.jsx";
 import FeedbackForm from "./SwadBite/FeedbackPage/FeedbackForm.jsx";
@@ -30,6 +31,7 @@ function App() {
         <Route path="/WeeklyMenu" element={<WeeklyMenu />} />
         <Route path="/Order" element={<Order />} />
         <Route path="/feedback" element={<FeedbackForm />} />
+        <Route path="/Cart" element={<Cart />} />
       </Routes>
       <Footer /> {/* Footer appears on all pages */}
     </div>
