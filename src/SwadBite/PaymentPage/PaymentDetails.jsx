@@ -52,8 +52,7 @@ function PaymentDetailsPage() {
     }
 
     setError('');
-
-    // 1️⃣ Save order data to localStorage (for later use in PaymentSuccess)
+  
     const order = {
       customerName: formData.name,
       deliveryAddress: isTakeaway ? "" : `${formData.address}, ${formData.city}, ${formData.pincode}`,

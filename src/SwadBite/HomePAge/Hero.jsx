@@ -87,7 +87,7 @@ const handleSearch = (e) => {
               loop
               muted
               playsInline
-              className="rounded-xl shadow-xl w-full max-w-md"
+              className="rounded-xl shadow-xl w-full max-w-md animate-float"
             >
               <source src={FoodVideo} type="video/mp4" />
               Your browser does not support the video tag.
