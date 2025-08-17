@@ -6,7 +6,7 @@ function Footer() {
     <footer className="relative bg-gray-900 text-white">
 
       {/* Top Curved Section with Quotes (longer) */}
-      <div className="bg-gray-800 text-center py-14 relative" style={{clipPath: 'ellipse(100% 100% at 50% 0%)'}}>
+      <div className="bg-gray-800 text-center py-14 relative" >
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-around items-center gap-4">
           <div>
             <p className="font-bold text-sm">SwadBite</p>
@@ -28,7 +28,7 @@ function Footer() {
       </div>
 
       {/* Bottom Curved Section with Info (shorter) */}
-      <div className="bg-yellow-700 text-gray-100 pt-8 pb-4 relative" style={{clipPath: 'ellipse(100% 100% at 50% 100%)'}}>
+      <div className="bg-gray-800 text-gray-100 pt-8 pb-4 relative">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-4 text-xs">
 
           {/* SwadBite Info */}

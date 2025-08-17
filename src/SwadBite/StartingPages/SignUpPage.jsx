@@ -1,30 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function SignUpModal({ onClose }) {
-  const [role, setRole] = useState('student');
+  const [role, setRole] = useState('student'); // UI role: 'student' or 'owner'
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: '',
     password: '',
     email: '',
-    photo: null,
     messName: ''
   });
 
   const [passwordError, setPasswordError] = useState('');
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'photo') {
-      setFormData({ ...formData, photo: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-      if (name === 'password') {
-        validatePassword(value);
-      }
-    }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (name === 'password') validatePassword(value);
   };
 
   const validatePassword = (password) => {
@@ -51,30 +45,54 @@ function SignUpModal({ onClose }) {
     }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (passwordError) {
       alert('Please fix the password requirements ❌');
       return;
     }
 
+    // Validation before sending
     if (role === 'student') {
-      if (formData.name && formData.password && formData.email && formData.photo) {
-        alert(`Signed up as STUDENT ✅\nWelcome, ${formData.name}`);
-        navigate('/home');
-      } else {
-        alert('Please fill all student fields ❌');
+      if (!(formData.name && formData.password && formData.email)) {
+        alert('Please fill all student fields including email ❌');
+        return;
       }
     } else {
-      if (formData.name && formData.messName && formData.password) {
-        alert(`Signed up as MESS OWNER ✅\nWelcome, ${formData.name}`);
-        navigate('/WeeklyMenu1');
-      } else {
-        alert('Please fill all owner fields ❌');
+      if (!(formData.name && formData.messName && formData.password && formData.email)) {
+        alert('Please fill all owner fields including email ❌');
+        return;
       }
+    }
+
+    try {
+      // Map UI role to backend role
+      const backendRole = role === 'owner' ? 'owner' : 'student';
+
+      // Prepare JSON payload
+      const payload = {
+        name: formData.name,
+        password: formData.password,
+        email: formData.email, // include email for both roles
+        role: backendRole
+      };
+
+      if (backendRole === 'owner') payload.messName = formData.messName;
+
+      const res = await axios.post('http://localhost:5000/api/users/signup', payload);
+
+      alert(res.data.message || 'Sign Up Successful ✅');
+
+      // Navigate after success
+      if (backendRole === 'student') navigate('/home');
+      else navigate('/WeeklyMenu1');
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || 'Sign Up Failed ❌');
     }
   };
 
-  const styles = { /* ⬅ unchanged — same as your original */ 
+  // ----------- STYLES REMAIN UNCHANGED ----------
+  const styles = { 
     overlay: {
       position: 'fixed',
       top: 0,
@@ -165,6 +183,7 @@ function SignUpModal({ onClose }) {
       color: '#fff',
     }
   };
+  // ------------------------------------------------
 
   return (
     <div style={styles.overlay}>
@@ -218,13 +237,6 @@ function SignUpModal({ onClose }) {
               onChange={handleChange}
               style={styles.input}
             />
-            <input
-              type="file"
-              name="photo"
-              accept="image/*"
-              onChange={handleChange}
-              style={styles.input}
-            />
           </>
         )}
 
@@ -235,6 +247,14 @@ function SignUpModal({ onClose }) {
               name="messName"
               placeholder="Mess Name"
               value={formData.messName}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              type="email"          // Added email input for owner
+              name="email"
+              placeholder="Email"
+              value={formData.email}
               onChange={handleChange}
               style={styles.input}
             />
@@ -262,4 +282,4 @@ function SignUpModal({ onClose }) {
   );
 }
 
-export default SignUpModal;
+export default SignUpModal;

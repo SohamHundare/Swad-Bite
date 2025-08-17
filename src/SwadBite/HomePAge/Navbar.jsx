@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaBars } from "react-icons/fa";
-import logo from "../Images/Logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { FaBars } from "react-icons/fa";
+import logo from "../Images/Logo.png";
 
 const Navbar = ({ onTriggerCurtain }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,9 +30,9 @@ const Navbar = ({ onTriggerCurtain }) => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white bg-opacity-100 shadow-md">
-      <div className="flex items-center justify-between px-4 md:px-10 py-0.5">
-        {/* Logo and Website Name */}
+    <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
+      <div className="flex items-center justify-between px-4 md:px-10 py-2">
+        {/* Logo */}
         <div
           className="flex items-center cursor-pointer"
           onClick={handleLogoClick}
@@ -52,29 +52,15 @@ const Navbar = ({ onTriggerCurtain }) => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-6 items-center">
-          <Link to="/" className={linkClasses("/")}>
-            Home
-          </Link>
-          <Link to="/explore" className={linkClasses("/explore")}>
-            Explore
-          </Link>
-          <Link to="/feedback" className={linkClasses("/feedback")}>
-            Feedback
-          </Link>
-          <Link to="/order" className={linkClasses("/order")}>
-            Order
-          </Link>
-          <Link to="/plans" className={linkClasses("/plans")}>
-            Plans
-          </Link>
+          <Link to="/" className={linkClasses("/")}>Home</Link>
+          <Link to="/explore" className={linkClasses("/explore")}>Explore</Link>
+          <Link to="/feedback" className={linkClasses("/feedback")}>Feedback</Link>
+          <Link to="/order" className={linkClasses("/order")}>Order</Link>
+          <Link to="/plans" className={linkClasses("/plans")}>Plans</Link>
           <Link to="/cart" className={linkClasses("/cart")}>
             <FontAwesomeIcon icon={faShoppingCart} size="lg" />
           </Link>
-          <Link
-            to="/login"
-            className={linkClasses("/login")}
-            onClick={handleLoginClick}
-          >
+          <Link to="/login" className={linkClasses("/login")} onClick={handleLoginClick}>
             Login
           </Link>
         </div>
@@ -100,7 +86,7 @@ const Navbar = ({ onTriggerCurtain }) => {
               { path: "/feedback", label: "Feedback" },
               { path: "/order", label: "Order" },
               { path: "/plans", label: "Plans" },
-              { path: "/cart", label: "Cart" },
+              { path: "/cart", label: <FontAwesomeIcon icon={faShoppingCart} size="lg" /> },
               { path: "/login", label: "Login" },
             ].map((item) => (
               <Link

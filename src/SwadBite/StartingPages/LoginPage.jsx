@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function LoginModal({ onClose }) {
   const [role, setRole] = useState('student');
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -15,31 +16,38 @@ function LoginModal({ onClose }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleLogin = () => {
-    // Password rule: min 8 chars, 1 uppercase, 1 number
-    const passwordValid = /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(formData.password);
-
-    if (!formData.username || !formData.password) {
+  const handleLogin = async () => {
+    if (!formData.email || !formData.password) {
       alert('Please fill in both fields ❌');
       return;
     }
 
-    if (!passwordValid) {
-      alert('Password must be at least 8 characters long, contain 1 uppercase letter, and 1 number ❌');
-      return;
-    }
+    try {
+      const payload = {
+        password: formData.password
+      };
 
-    alert(`Logged in as ${role.toUpperCase()} ✅\nWelcome, ${formData.username}`);
+      if (role === 'student') payload.email = formData.email;
+      else payload.email = formData.email; // Optional for mess owner if needed
 
-    if (role === 'owner') {
-      localStorage.setItem('userRole', 'messowner');
-      navigate('/WeeklyMenu1');
-    } else if (role === 'student') {
-      localStorage.setItem('userRole', 'student');
-      navigate('/home');
+      const res = await axios.post('http://localhost:5000/api/users/login', payload);
+
+      alert(res.data.message || `Logged in as ${role.toUpperCase()} ✅`);
+
+      // Store role locally if needed
+      localStorage.setItem('userRole', role === 'owner' ? 'messowner' : 'student');
+
+      // Navigate based on role
+      if (role === 'owner') navigate('/WeeklyMenu1');
+      else navigate('/home');
+
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || 'Login Failed ❌');
     }
   };
 
+  // ----------- STYLES REMAIN UNCHANGED ----------
   const styles = {
     overlay: {
       position: 'fixed',
@@ -125,6 +133,7 @@ function LoginModal({ onClose }) {
       color: '#fff',
     }
   };
+  // ------------------------------------------------
 
   return (
     <div style={styles.overlay}>
@@ -151,10 +160,10 @@ function LoginModal({ onClose }) {
         </div>
 
         <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
           onChange={handleChange}
           style={styles.input}
         />
@@ -180,4 +189,4 @@ function LoginModal({ onClose }) {
   );
 }
 
-export default LoginModal;
+export default LoginModal;
