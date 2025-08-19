@@ -23,7 +23,7 @@ function OrderSummary() {
   }, []);
 
   const baseFee = orderItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
-  const gst = +(baseFee * 0.18).toFixed(2);
+  const gst = +(baseFee * 0.08).toFixed(2);
   const maintenance = +(baseFee * 0.02).toFixed(2);
   const total = +(baseFee + gst + maintenance).toFixed(2);
 
@@ -58,7 +58,7 @@ function OrderSummary() {
               <span>₹{baseFee}</span>
             </div>
             <div className="flex justify-between text-gray-600">
-              <span>GST (18%)</span>
+              <span>GST (08%)</span>
               <span>₹{gst}</span>
             </div>
             <div className="flex justify-between text-gray-600">

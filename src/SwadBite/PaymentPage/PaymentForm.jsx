@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PaymentMethods from './PaymentMethods';
 
@@ -20,13 +20,38 @@ function PaymentForm(props) {
 
   //fetching price from local storage
 
-  const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
-  const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+  // const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
+  // const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
 
-  const price = plan?.price || meal?.price || 0;
-  const gst = +(price * 0.18).toFixed(2);
-  const maintenance = +(price * 0.02).toFixed(2);
-  const total = +(price + gst + maintenance).toFixed(2);
+  // const price = plan?.price || meal?.price || 0;
+  // const gst = +(price * 0.18).toFixed(2);
+  // const maintenance = +(price * 0.02).toFixed(2);
+  // const total = +(price + gst + maintenance).toFixed(2);
+
+  const [orderItems, setOrderItems] = useState([]);
+  
+  useEffect(() => {
+    const rawCart = JSON.parse(localStorage.getItem("swadbite_cart")) || [];
+    const savedCart = Array.isArray(rawCart) ? rawCart : rawCart.items || [];
+
+    const selectedMeal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
+    const selectedPlan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+
+    if (savedCart.length > 0) {
+      setOrderItems(savedCart.map(item => ({ ...item, quantity: item.quantity || 1 })));
+    } else if (selectedMeal) {
+      setOrderItems([{ ...selectedMeal, quantity: selectedMeal.quantity || 1 }]);
+    } else if (selectedPlan) {
+      setOrderItems([{ ...selectedPlan, quantity: selectedPlan.quantity || 1 }]);
+    } else {
+      setOrderItems([]);
+    }
+  }, []);
+
+  const baseFee = orderItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
+  const gst = +(baseFee * 0.08).toFixed(2);
+  const maintenance = +(baseFee * 0.02).toFixed(2);
+  const total = +(baseFee + gst + maintenance).toFixed(2);
 
   // UPI validation
   function checkUpiValid() {

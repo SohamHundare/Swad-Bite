@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import HomeMain from "./SwadBite/HomePAge/HomeMain";
 import Cart from "./SwadBite/CartPage/Cart";
-import Footer from "./SwadBite/PaymentPage/Footer";
+import Footer from "./SwadBite/HomePAge/Footer";
 import WelcomePage from "./SwadBite/StartingPages/WelcomePage";
 import LoginModal from "./SwadBite/StartingPages/LoginPage";
 import SignUpModal from "./SwadBite/StartingPages/SignUpPage";
