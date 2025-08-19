@@ -13,7 +13,7 @@ const PlanPage = ({ user }) => {
 
   user = user || defaultUser;
 
-  const [activeLink, setActiveLink] = useState(null);
+  
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
