@@ -1,8 +1,39 @@
 // Complaint.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import './Complaint.css';
 
-export default function Complaint({ formData, setFormData, handleSubmit, setShowComplaint, submitted }) {
+export default function Complaint({ formData, setFormData, setShowComplaint }) {
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/complaints", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setSubmitted(true);
+        setFormData({
+          name: "",
+          phone: "",
+          place: "",
+          foodType: "",
+          messName: "",
+          complaintType: "",
+          description: "",
+        });
+      } else {
+        alert("❌ Failed to store complaint.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("⚠️ Error submitting complaint.");
+    }
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-content animate-fadein">

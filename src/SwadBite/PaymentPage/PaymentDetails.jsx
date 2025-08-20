@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import bgImage from '../Images/MessImage.png';
 import foodImg from '../Images/foodImg.png';
 import secureImg from './Secure.png';
@@ -6,13 +6,39 @@ import secureImg from './Secure.png';
 
 function PaymentDetailsPage() {
 
-  const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
-  const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+  // const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
+  // const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
 
-  const price = plan?.price || meal?.price || 0;
-  const gst = +(price * 0.18).toFixed(2);
-  const maintenance = +(price * 0.02).toFixed(2);
-  const total = +(price + gst + maintenance).toFixed(2);                                              
+  // const price = plan?.price || meal?.price || 0;
+  // const gst = +(price * 0.18).toFixed(2);
+  // const maintenance = +(price * 0.02).toFixed(2);
+  // const total = +(price + gst + maintenance).toFixed(2);     
+  
+  const [orderItems, setOrderItems] = useState([]);
+    
+    useEffect(() => {
+      const rawCart = JSON.parse(localStorage.getItem("swadbite_cart")) || [];
+      const savedCart = Array.isArray(rawCart) ? rawCart : rawCart.items || [];
+  
+      const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
+      const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+  
+      if (savedCart.length > 0) {
+        setOrderItems(savedCart.map(item => ({ ...item, quantity: item.quantity || 1 })));
+      } else if (meal) {
+        setOrderItems([{ ...meal, quantity: meal.quantity || 1 }]);
+      } else if (plan) {
+        setOrderItems([{ ...plan, quantity: plan.quantity || 1 }]);
+      } else {
+        setOrderItems([]);
+      }
+    }, []);
+  
+    const baseFee = orderItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
+    const gst = +(baseFee * 0.08).toFixed(2);
+    const maintenance = +(baseFee * 0.02).toFixed(2);
+    const total = +(baseFee + gst + maintenance).toFixed(2);
+  
 
   const [isTakeaway, setIsTakeaway] = useState(false);
   const isLoggedIn = false;
@@ -25,7 +51,7 @@ function PaymentDetailsPage() {
     city: '',
     pincode: '',
   });
-
+  
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -43,52 +69,53 @@ function PaymentDetailsPage() {
     );
   };
 
+   
   const handlePay = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!isFormValid()) {
-      setError('Please fill all required fields.');
-      return;
-    }
+  if (!isFormValid()) {
+    setError("Please fill all required fields.");
+    return;
+  }
 
-    setError('');
+  setError("");
 
-    // 1️⃣ Save order data to localStorage (for later use in PaymentSuccess)
-    const order = {
-      customerName: formData.name,
-      deliveryAddress: isTakeaway ? "" : `${formData.address}, ${formData.city}, ${formData.pincode}`,
-      isTakeaway,
-      paymentMethod: "card",
-      totalAmount: total ,
-      items: [
-        {
-          name: meal?.name || plan?.name || "Unknown Meal" ,
-          quantity: 1,
-          price:  total ,
-        },
-      ],
-    };
-
-    localStorage.setItem("swadbite_order", JSON.stringify(order));
-
-    try {
-      // 2️⃣ Create Stripe Checkout session
-      const res = await fetch("http://localhost:5000/api/stripe/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: total * 100 }),
-      });
-
-      const data = await res.json();
-
-      const stripe = window.Stripe("pk_test_51RsL62JRAH6EQmuz8uUbQq5NttBJ8BUN4K8YkdFI6wI06pQ8AowdR4Mfxg9FCIGOLAPQKNlbJvJhLbloTcirknMh00XBkKT1Nu");
-      stripe.redirectToCheckout({ sessionId: data.id });
-
-    } catch (err) {
-      console.error("Payment process error:", err);
-      alert("Payment failed. Please try again.");
-    }
+  // Build the order object properly
+  const order = {
+    customerName: formData.name,
+    deliveryAddress: isTakeaway ? "" : `${formData.address}, ${formData.city}, ${formData.pincode}`,
+    isTakeaway,
+    paymentMethod: "card",
+    totalAmount: total,
+    items: orderItems.map(item => ({
+      name: item.name,
+      quantity: item.quantity || 1,
+      price: item.price,
+    })),
   };
+
+  localStorage.setItem("swadbite_order", JSON.stringify(order));
+
+  try {
+    // Send items to backend instead of just total
+    const res = await fetch("http://localhost:5000/api/stripe/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: total * 100}),
+      // body: JSON.stringify({ items: order.items }),
+    });
+
+    const data = await res.json();
+
+    const stripe = window.Stripe("pk_test_51RsL62JRAH6EQmuz8uUbQq5NttBJ8BUN4K8YkdFI6wI06pQ8AowdR4Mfxg9FCIGOLAPQKNlbJvJhLbloTcirknMh00XBkKT1Nu");
+    stripe.redirectToCheckout({ sessionId: data.id });
+
+  } catch (err) {
+    console.error("Payment process error:", err);
+    alert("Payment failed. Please try again.");
+  }
+};
+
 
   return (
     <div className="relative min-h-screen bg-gray-50 overflow-hidden font-sans">

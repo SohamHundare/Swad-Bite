@@ -157,7 +157,7 @@ function WelcomePage() {
                 e.target.style.backgroundColor = styles.button.backgroundColor;
                 e.target.style.transform = 'scale(1)';
               }}
-              onClick={() => navigate('/signup')}
+              onClick={() => navigate('/SignUp')}
             >
               Sign Up
             </button>
@@ -172,7 +172,7 @@ function WelcomePage() {
                 e.target.style.backgroundColor = styles.button.backgroundColor;
                 e.target.style.transform = 'scale(1)';
               }}
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/Login')}
             >
               Login
             </button>
