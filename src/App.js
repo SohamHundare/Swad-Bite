@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route, useNavigate } from "react-router-dom";
 import HomeMain from "./SwadBite/HomePAge/HomeMain";
 import Cart from "./SwadBite/CartPage/Cart";
-import Footer from "./SwadBite/HomePAge/Footer";
+import Footer from "./SwadBite/PaymentPage/Footer";
 import WelcomePage from "./SwadBite/StartingPages/WelcomePage";
 import LoginModal from "./SwadBite/StartingPages/LoginPage";
 import SignUpModal from "./SwadBite/StartingPages/SignUpPage";
@@ -68,8 +67,7 @@ function App() {
         )}
 
         {/* Login and Signup */}
-        {/* Login and Signup float on top of Home */}
-<Route
+        <Route
   path="/Login"
   element={<><HomeMain /><LoginModal onSuccess={() => navigate("/home")} /></>}
 />
@@ -77,7 +75,6 @@ function App() {
   path="/SignUp"
   element={<><HomeMain /><SignUpModal onSuccess={() => navigate("/home")} /></>}
 />
-
 
         {/* Home page */}
         <Route path="/" element={<HomeMain />} />
