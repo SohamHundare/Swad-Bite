@@ -9,6 +9,7 @@ const testimonialRoutes = require('./routes/testimonialRoutes');
 const stripeRoutes = require('./routes/stripeRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
+const userRoutes = require('./routes/UserRouter'); 
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/stripe", stripeRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/testimonials", testimonialRoutes);
+app.use('/api/users', userRoutes);
 
 // ======================
 // 🚀 Complaint Schema + Route
