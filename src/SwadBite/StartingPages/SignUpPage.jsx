@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../HomePAge/AuthContext';   // ⬅️ import AuthContext
 
 function SignUpModal({ onClose }) {
-  const [role, setRole] = useState('student'); // UI role: 'student' or 'owner'
+  const [role, setRole] = useState('student'); 
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);   // ⬅️ access login function
 
   const [formData, setFormData] = useState({
     name: '',
@@ -51,7 +53,6 @@ function SignUpModal({ onClose }) {
       return;
     }
 
-    // Validation before sending
     if (role === 'student') {
       if (!(formData.name && formData.password && formData.email)) {
         alert('Please fill all student fields including email ❌');
@@ -65,24 +66,25 @@ function SignUpModal({ onClose }) {
     }
 
     try {
-      // Map UI role to backend role
       const backendRole = role === 'owner' ? 'owner' : 'student';
-
-      // Prepare JSON payload
       const payload = {
         name: formData.name,
         password: formData.password,
-        email: formData.email, // include email for both roles
-        role: backendRole
+        email: formData.email,
+        role: backendRole,
       };
-
       if (backendRole === 'owner') payload.messName = formData.messName;
 
-      const res = await axios.post('http://localhost:5000/api/users/signup', payload);
+      const res = await axios.post('https://swadbite-backend-2.onrender.com/api/users/signup', payload);
+
+      // ✅ Save to AuthContext
+      const userData = res.data.user;   // assuming backend returns user object
+      const tokenData = res.data.token; // assuming backend returns token
+      login(userData, tokenData);       // store in context + localStorage
 
       alert(res.data.message || 'Sign Up Successful ✅');
 
-      // Navigate after success
+      // ✅ Navigate based on role
       if (backendRole === 'student') navigate('/home');
       else navigate('/WeeklyMenu1');
     } catch (err) {

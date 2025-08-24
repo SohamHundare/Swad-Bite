@@ -1,0 +1,52 @@
+import React from 'react';
+import { XCircleIcon } from '@heroicons/react/24/solid';
+import bgImage from '../Images/MessImage.png';
+import logo from '../Images/Logo.png';
+
+function PaymentFail() {
+  return (
+    <div className="relative min-h-screen bg-gray-50 overflow-hidden font-sans">
+      <div
+        className="absolute top-0 left-0 w-full h-80 bg-cover bg-center blur-sm brightness-75 z-0"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      ></div>
+
+      <div className="relative z-10 max-w-3xl mx-auto px-6 pt-20 pb-16 text-center">
+        <div className="bg-white shadow-2xl rounded-xl p-10 transition-transform duration-300 hover:scale-[1.01]">
+          <XCircleIcon className="h-20 w-20 text-red-500 mx-auto mb-4 transition-transform duration-300 hover:scale-110 animate-pulse" />
+
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2 hover:text-red-600 transition-colors duration-300">
+            Payment Failed!
+          </h1>
+          <p className="text-gray-600 mb-6 text-sm md:text-base hover:text-gray-700 transition-colors duration-300">
+            Unfortunately, your payment could not be processed. Please try again or use a different payment method.
+          </p>
+
+          <div className="mt-6 animate-float">
+            <img
+              src={logo}
+              alt="Swad-Bite Logo"
+              className="w-32 mx-auto transition-transform duration-300 hover:scale-105"
+            />
+            <p className="text-sm text-gray-500 mt-2 italic hover:text-red-600 transition-colors duration-300">
+              Swaad-Bite – Tasty Bites. Timely Delivered.
+            </p>
+          </div>
+
+          <button
+            className="mt-8 bg-red-500 hover:bg-red-600 text-white py-2.5 px-6 rounded-md text-base transition transform hover:scale-105 duration-300 shadow-md"
+            onClick={() => window.location.href = '/'}
+          >
+            Back to Home
+          </button>
+        </div>
+
+        <footer className="mt-10 text-xs text-gray-400 hover:text-gray-600 transition-colors duration-300">
+          © 2025 Swad-Bite. All rights reserved.
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+export default PaymentFail;

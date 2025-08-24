@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../HomePAge/AuthContext'; // ✅ import AuthContext
 
 function LoginModal({ onClose }) {
   const [role, setRole] = useState('student');
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext); // ✅ get login from context
 
   const [formData, setFormData] = useState({
     email: '',
@@ -23,21 +25,26 @@ function LoginModal({ onClose }) {
     }
 
     try {
-      const payload = {
-        password: formData.password
-      };
-
-      if (role === 'student') payload.email = formData.email;
-      else payload.email = formData.email; // Optional for mess owner if needed
-
-      const res = await axios.post('http://localhost:5000/api/users/login', payload);
+      const res = await axios.post('https://swadbite-backend-2.onrender.com/api/users/login', {
+        email: formData.email,
+        password: formData.password,
+      });
 
       alert(res.data.message || `Logged in as ${role.toUpperCase()} ✅`);
 
-      // Store role locally if needed
-      localStorage.setItem('userRole', role === 'owner' ? 'messowner' : 'student');
+      // ✅ Use AuthContext login()
+      const userData = {
+        name: res.data.user?.name || "User", // if your API sends name
+        email: res.data.user?.email || formData.email,
+        role: role === 'owner' ? 'messowner' : 'student',
+      };
 
-      // Navigate based on role
+      login(userData, res.data.token); // update context + localStorage
+
+      // ✅ Close modal
+      if (onClose) onClose();
+
+      // Navigate
       if (role === 'owner') navigate('/WeeklyMenu1');
       else navigate('/home');
 

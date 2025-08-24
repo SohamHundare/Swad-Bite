@@ -98,7 +98,7 @@ function PaymentDetailsPage() {
 
   try {
     // Send items to backend instead of just total
-    const res = await fetch("http://localhost:5000/api/stripe/create-checkout-session", {
+    const res = await fetch("https://swadbite-backend-2.onrender.com/api/stripe/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: total * 100}),

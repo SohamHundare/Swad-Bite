@@ -7,7 +7,7 @@ export default function Complaint({ formData, setFormData, setShowComplaint }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/complaints", {
+      const response = await fetch("https://swadbite-backend-2.onrender.com/api/complaints", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
