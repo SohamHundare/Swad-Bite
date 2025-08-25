@@ -19,7 +19,7 @@ const Chatbot = () => {
     },
     {
       keywords: ["location", "city", "serve", "available"],
-      reply: "We currently serve Pune, Mumbai, and Nashik.",
+      reply: "We currently serve Pune ",
     },
     {
       keywords: ["subscribe", "join", "membership"],

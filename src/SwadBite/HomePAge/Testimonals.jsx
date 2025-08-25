@@ -13,7 +13,7 @@ const Testimonials = () => {
 
   // Fetch testimonials from backend on mount
   useEffect(() => {
-    axios.get('http://localhost:5000/api/testimonials')
+    axios.get('https://swadbite-backend-2.onrender.com/api/testimonials')
       .then(res => setTestimonials(res.data))
       .catch(err => console.error(err));
   }, []);
@@ -36,7 +36,7 @@ const Testimonials = () => {
     e.preventDefault();
     if (!formData.name || !formData.quote) return;
 
-    axios.post('http://localhost:5000/api/testimonials', {
+    axios.post('https://swadbite-backend-2.onrender.com/api/testimonials', {
       name: formData.name,
       image: formData.image || 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
       quote: formData.quote,

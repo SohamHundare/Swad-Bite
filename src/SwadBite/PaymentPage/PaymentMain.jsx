@@ -9,6 +9,7 @@ import PaymentForm from "./PaymentForm";
 import PaymentMethods from "./PaymentMethods";
 import SecurePayment from "./SecurePayment";
 import NeedHelp from "./NeedHelp";
+import PaymentFail from "./PaymentFail";
 
 function PaymentMain() {
   return (
@@ -17,6 +18,7 @@ function PaymentMain() {
         <Route path="/" element={<Appli />} />
         <Route path="/paymentdetails" element={<PaymentDetailsPage />} />
         <Route path="/success" element={<PaymentSuccess />} />
+        <Route path="/fail" element={<PaymentFail />} />
         <Route path="/header" element={<Header />} />
         <Route path="/order-summary" element={<OrderSummary />} />
         <Route path="/payment-form" element={<PaymentForm />} />

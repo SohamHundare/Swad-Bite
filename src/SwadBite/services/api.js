@@ -2,9 +2,9 @@
 import axios from 'axios';
 
 export const submitFeedback = (feedbackData) => {
-  return axios.post('http://localhost:5000/api/feedback/submit', feedbackData);
+  return axios.post('https://swadbite-backend-2.onrender.com/api/feedback/submit', feedbackData);
 };
 
 export const getFeedback = () => {
-  return axios.get('http://localhost:5000/api/feedback/get');
+  return axios.get('https://swadbite-backend-2.onrender.com/api/feedback/get');
 };

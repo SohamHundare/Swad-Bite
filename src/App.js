@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import HomeMain from "./SwadBite/HomePAge/HomeMain";
 import Cart from "./SwadBite/CartPage/Cart";
-import Footer from "./SwadBite/PaymentPage/Footer";
+import Footer from "./SwadBite/HomePAge/Footer";
 import WelcomePage from "./SwadBite/StartingPages/WelcomePage";
 import LoginModal from "./SwadBite/StartingPages/LoginPage";
 import SignUpModal from "./SwadBite/StartingPages/SignUpPage";
@@ -14,7 +14,8 @@ import WeeklyMenu from "./SwadBite/MenuPage/WeeklyMenu";
 import Order from "./SwadBite/OrdersPage/Order";
 import FeedbackForm from "./SwadBite/FeedbackPage/FeedbackForm";
 import WeeklyMenuModal from "./SwadBite/StartingPages/WeeklyMenu1";
-import Offers from "./SwadBite/ExplorePage/Offers"; // 👈 NEW PAGE
+import { useContext } from "react";
+import { AuthContext } from "./SwadBite/HomePAge/AuthContext";
 
 import "./App.css";
 
@@ -26,6 +27,8 @@ function App() {
   const [showWelcome, setShowWelcome] = useState(() => {
     return !sessionStorage.getItem("hasSeenWelcome");
   });
+
+   const { login } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -68,14 +71,42 @@ function App() {
         )}
 
         {/* Login and Signup */}
-        <Route
-          path="/Login"
-          element={<><HomeMain /><LoginModal onSuccess={() => navigate("/home")} /></>}
-        />
-        <Route
-          path="/SignUp"
-          element={<><HomeMain /><SignUpModal onSuccess={() => navigate("/home")} /></>}
-        />
+        {/* <Route
+  path="/Login"
+  element={<><HomeMain /><LoginModal onSuccess={() => navigate("/home")} /></>}
+/> */}
+<Route
+  path="/Login"
+  element={
+    <>
+      <HomeMain />
+      <LoginModal
+        onSuccess={(userData) => {
+          login(userData); // save in context + localStorage
+          navigate("/");
+        }}
+      />
+    </>
+  }
+/>
+{/* <Route
+  path="/SignUp"
+  element={<><HomeMain /><SignUpModal onSuccess={() => navigate("/home")} /></>}
+/> */}<Route
+  path="/SignUp"
+  element={
+    <>
+      <HomeMain />
+      <SignUpModal
+        onSuccess={(userData) => {
+          login(userData); // save in context + localStorage
+          navigate("/");
+        }}
+      />
+    </>
+  }
+/>
+
 
         {/* Home page */}
         <Route path="/" element={<HomeMain />} />
@@ -90,9 +121,6 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/feedback" element={<FeedbackForm />} />
         <Route path="/cart" element={<Cart />} />
-
-        {/* ✅ New Offers Page (from MongoDB) */}
-        <Route path="/offers" element={<Offers />} />
       </Routes>
 
       {/* Footer always visible except on WelcomePage */}
@@ -101,4 +129,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;

@@ -12,7 +12,7 @@ function PaymentSuccess() {
   if (orderData && !alreadySaved) {
     localStorage.setItem("swadbite_saved", "true"); // move this BEFORE fetch
 
-    fetch("http://localhost:5000/api/orders/createorder", {
+    fetch("https://swadbite-backend-2.onrender.com/api/orders/createorder", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

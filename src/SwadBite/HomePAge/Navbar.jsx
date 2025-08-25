@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faUserCircle } from "@fortawesome/free-solid-svg-icons"; // added profile icon
 import { FaBars } from "react-icons/fa";
 import logo from "../Images/Logo.png";
+import { useContext } from "react";
+import { AuthContext } from "./AuthContext";
+import ProfileMenu from "./ProfileMenu";
 
 const Navbar = ({ onTriggerCurtain }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, logout } = useContext(AuthContext);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
   const location = useLocation();
 
   const isActive = (path) =>
@@ -22,10 +28,6 @@ const Navbar = ({ onTriggerCurtain }) => {
     }`;
 
   const handleLogoClick = () => {
-    if (onTriggerCurtain) onTriggerCurtain();
-  };
-
-  const handleLoginClick = () => {
     if (onTriggerCurtain) onTriggerCurtain();
   };
 
@@ -52,17 +54,24 @@ const Navbar = ({ onTriggerCurtain }) => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-6 items-center">
-          <Link to="/" className={linkClasses("/")}>Home</Link>
+          <Link to="/home" className={linkClasses("/")}>Home</Link>
           <Link to="/explore" className={linkClasses("/explore")}>Explore</Link>
           <Link to="/feedback" className={linkClasses("/feedback")}>Feedback</Link>
           <Link to="/order" className={linkClasses("/order")}>Order</Link>
           <Link to="/plans" className={linkClasses("/plans")}>Plans</Link>
           <Link to="/cart" className={linkClasses("/cart")}>
-            <FontAwesomeIcon icon={faShoppingCart} size="lg" />
+            <FontAwesomeIcon icon={faShoppingCart} size="lg" />Cart
           </Link>
-          <Link to="/login" className={linkClasses("/login")} onClick={handleLoginClick}>
-            Login
-          </Link>
+
+        {!user ? (
+  <Link to="/login" className={linkClasses("/login")}>
+    Login
+  </Link>
+) : (
+  <ProfileMenu onLogout={logout} />
+)}
+
+
         </div>
 
         {/* Mobile Hamburger */}
@@ -81,28 +90,32 @@ const Navbar = ({ onTriggerCurtain }) => {
         <div className="md:hidden bg-white shadow-inner">
           <div className="px-6 py-3 space-y-2">
             {[
-              { path: "/", label: "Home" },
+              { path: "/home", label: "Home" },
               { path: "/explore", label: "Explore" },
               { path: "/feedback", label: "Feedback" },
               { path: "/order", label: "Order" },
               { path: "/plans", label: "Plans" },
               { path: "/cart", label: <FontAwesomeIcon icon={faShoppingCart} size="lg" /> },
-              { path: "/login", label: "Login" },
             ].map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 className={`${linkClasses(item.path)} block border-b`}
-                onClick={() => {
-                  setMenuOpen(false);
-                  if (item.path === "/login" && onTriggerCurtain) {
-                    onTriggerCurtain();
-                  }
-                }}
+                onClick={() => setMenuOpen(false)}
               >
                 {item.label}
               </Link>
             ))}
+
+            {!user ? (
+  <Link to="/login" className={linkClasses("/login")}>
+    Login
+  </Link>
+) : (
+  <ProfileMenu onLogout={logout} />
+)}
+
+
           </div>
         </div>
       )}
