@@ -14,6 +14,7 @@ import WeeklyMenu from "./SwadBite/MenuPage/WeeklyMenu";
 import Order from "./SwadBite/OrdersPage/Order";
 import FeedbackForm from "./SwadBite/FeedbackPage/FeedbackForm";
 import WeeklyMenuModal from "./SwadBite/StartingPages/WeeklyMenu1";
+import Offers from "./SwadBite/ExplorePage/Offers"; // 👈 NEW PAGE
 
 import "./App.css";
 
@@ -68,13 +69,13 @@ function App() {
 
         {/* Login and Signup */}
         <Route
-  path="/Login"
-  element={<><HomeMain /><LoginModal onSuccess={() => navigate("/home")} /></>}
-/>
-<Route
-  path="/SignUp"
-  element={<><HomeMain /><SignUpModal onSuccess={() => navigate("/home")} /></>}
-/>
+          path="/Login"
+          element={<><HomeMain /><LoginModal onSuccess={() => navigate("/home")} /></>}
+        />
+        <Route
+          path="/SignUp"
+          element={<><HomeMain /><SignUpModal onSuccess={() => navigate("/home")} /></>}
+        />
 
         {/* Home page */}
         <Route path="/" element={<HomeMain />} />
@@ -89,6 +90,9 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/feedback" element={<FeedbackForm />} />
         <Route path="/cart" element={<Cart />} />
+
+        {/* ✅ New Offers Page (from MongoDB) */}
+        <Route path="/offers" element={<Offers />} />
       </Routes>
 
       {/* Footer always visible except on WelcomePage */}
@@ -97,4 +101,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;
