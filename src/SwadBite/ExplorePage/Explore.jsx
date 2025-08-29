@@ -10,18 +10,18 @@ import NotFoundMsg from "./NotFoundMsg";
 
 const Explore = () => {
   const [messes, setMesses] = useState([]);
-  const [loading, setLoading] = useState(true); // 👈 NEW
+  const [loading, setLoading] = useState(true); //  NEW
   const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
 
     // Fetch messes from backend
-    fetch("http://localhost:5000/api/messes")
+    fetch("https://swadbite-backend-2.onrender.com/api/messes")
       .then((res) => res.json())
       .then((data) => {
         setMesses(data);
-        setLoading(false); // 👈 stop loading after fetch
+        setLoading(false); //  stop loading after fetch
       })
       .catch((err) => {
         console.error("Error fetching messes:", err);
