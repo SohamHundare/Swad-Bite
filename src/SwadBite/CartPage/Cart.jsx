@@ -19,7 +19,9 @@ const Cart = () => {
     const savedSelected =
       JSON.parse(localStorage.getItem("swadbite_selectedItems")) || [];
 
-    setCart(savedCart.map((item) => ({ ...item, quantity: item.quantity || 1 })));
+    setCart(
+      savedCart.map((item) => ({ ...item, quantity: item.quantity || 1 }))
+    );
     setSelectedItems(savedSelected);
   }, []);
 
@@ -79,7 +81,10 @@ const Cart = () => {
     const itemsToPay = selectedItems.map((idx) => cart[idx]).filter(Boolean);
     if (itemsToPay.length === 0) return;
 
-    localStorage.setItem("swadbite_cart", JSON.stringify({ items: itemsToPay }));
+    localStorage.setItem(
+      "swadbite_cart",
+      JSON.stringify({ items: itemsToPay })
+    );
 
     // Clear selected meal/plan to avoid conflicts
     localStorage.removeItem("swadbite_selectedMeal");
@@ -111,10 +116,21 @@ const Cart = () => {
                 {cart.map((item, index) => (
                   <tr
                     key={index}
-                    className={selectedItems.includes(index) ? "selected-row" : ""}
-                    onClick={() => handleSelectItem(index)}
+                    className={
+                      selectedItems.includes(index) ? "selected-row" : ""
+                    }
+                    onClick={() => handleSelectItem(index)} // ✅ toggle when row is clicked
                     style={{ cursor: "pointer" }}
                   >
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedItems.includes(index)}
+                        onClick={(e) => e.stopPropagation()} // ✅ prevent double toggle
+                        onChange={() => handleSelectItem(index)}
+                      />
+                    </td>
+
                     <td className="meal-info">
                       <img
                         src={item.image || ""}
@@ -127,7 +143,7 @@ const Cart = () => {
                     <td>
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
+                          e.stopPropagation(); // ✅ avoid toggling checkbox when adjusting qty
                           handleQuantityChange(index, -1);
                         }}
                       >
@@ -148,7 +164,7 @@ const Cart = () => {
                       <button
                         className="remove-btn"
                         onClick={(e) => {
-                          e.stopPropagation();
+                          e.stopPropagation(); // ✅ don’t toggle checkbox when removing
                           handleRemove(index);
                         }}
                       >
