@@ -5,39 +5,39 @@ import logo from '../Images/Logo.png';
 
 
 function PaymentSuccess() {
-  useEffect(() => {
-  const orderData = JSON.parse(localStorage.getItem("swadbite_order"));
-  const alreadySaved = localStorage.getItem("swadbite_saved");
+//   useEffect(() => {
+//   const orderData = JSON.parse(localStorage.getItem("swadbite_order"));
+//   const alreadySaved = localStorage.getItem("swadbite_saved");
 
-  if (orderData && !alreadySaved) {
-    localStorage.setItem("swadbite_saved", "true"); // move this BEFORE fetch
+//   if (orderData && !alreadySaved) {
+//     localStorage.setItem("swadbite_saved", "true"); // move this BEFORE fetch
 
-    fetch("https://swadbite-backend-2.onrender.com/api/orders/createorder", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Order saved to database:", data);
-        localStorage.removeItem("swadbite_order");
-      })
-      .catch((err) => {
-        console.error("Error saving order:", err);
-        localStorage.removeItem("swadbite_saved"); // allow retry on failure
-      });
-  }
-}, []);
+//     fetch("https://swadbite-backend-2.onrender.com/api/orders/createorder", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(orderData),
+//     })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         console.log("Order saved to database:", data);
+//         localStorage.removeItem("swadbite_order");
+//       })
+//       .catch((err) => {
+//         console.error("Error saving order:", err);
+//         localStorage.removeItem("swadbite_saved"); // allow retry on failure
+//       });
+//   }
+// }, []);
 
 
-  // Optional cleanup: remove flag when leaving the page
-  useEffect(() => {
-    return () => {
-      localStorage.removeItem("swadbite_saved");
-    };
-  }, []);
+//   // Optional cleanup: remove flag when leaving the page
+//   useEffect(() => {
+//     return () => {
+//       localStorage.removeItem("swadbite_saved");
+//     };
+//   }, []);
 
   return (
     <div className="relative min-h-screen bg-gray-50 overflow-hidden font-sans">
