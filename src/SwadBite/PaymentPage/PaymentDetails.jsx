@@ -75,7 +75,7 @@ function PaymentDetailsPage() {
 
     // Make sure items have price and quantity
     const items = orderItems.map((item) => ({
-      name: item.name || "Food",
+      name: item.mealName || item.planName || "Food",
       price: item.price,
       quantity: item.quantity || 1,
     }));
