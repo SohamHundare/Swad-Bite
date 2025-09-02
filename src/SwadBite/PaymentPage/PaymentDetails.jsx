@@ -35,7 +35,7 @@ function PaymentDetailsPage() {
   const total = +(baseFee + gst + maintenance).toFixed(2);
 
   const [isTakeaway, setIsTakeaway] = useState(false);
-  const isLoggedIn = false;
+  const isLoggedIn = localStorage.getItem("user") !== null;
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -84,8 +84,9 @@ function PaymentDetailsPage() {
       userId,
       customerName: formData.name,
       isTakeaway,
-      items,
+      items,//items is an array we built
       amount: total,
+      deliveryAddress: isTakeaway ? "Takeaway" : formData.address,//newly added later
     };
 
     try {
@@ -115,14 +116,11 @@ function PaymentDetailsPage() {
       if (!data.id) throw new Error("No session ID returned from backend");
 
       // make sure Stripe.js is loaded
-      if (!window.Stripe) {
-        console.error(
-          "Stripe.js not found — add <script src='https://js.stripe.com/v3/'></script> to public/index.html"
-        );
-        throw new Error("Stripe.js not loaded");
-      }
+      
       const stripe = window.Stripe("pk_test_51RsL62JRAH6EQmuz8uUbQq5NttBJ8BUN4K8YkdFI6wI06pQ8AowdR4Mfxg9FCIGOLAPQKNlbJvJhLbloTcirknMh00XBkKT1Nu");
       await stripe.redirectToCheckout({ sessionId: data.id });
+
+      
     } catch (err) {
       console.error("Payment process error:", err);
       alert("Payment failed. Please try again.");
@@ -250,6 +248,9 @@ function PaymentDetailsPage() {
               </p>
               <img src={secureImg} alt="Secure" className="mx-auto mt-2 w-24" />
             </div>
+
+
+
 
             <div className="mt-5 text-center text-sm">
               <p className="text-gray-500">Need help with payment?</p>

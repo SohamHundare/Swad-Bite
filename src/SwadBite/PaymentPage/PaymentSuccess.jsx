@@ -1,43 +1,10 @@
-import React, { useEffect } from 'react';
+
 import { CheckBadgeIcon } from '@heroicons/react/24/solid';
 import bgImage from '../Images/MessImage.png';
 import logo from '../Images/Logo.png';
 
 
 function PaymentSuccess() {
-//   useEffect(() => {
-//   const orderData = JSON.parse(localStorage.getItem("swadbite_order"));
-//   const alreadySaved = localStorage.getItem("swadbite_saved");
-
-//   if (orderData && !alreadySaved) {
-//     localStorage.setItem("swadbite_saved", "true"); // move this BEFORE fetch
-
-//     fetch("https://swadbite-backend-2.onrender.com/api/orders/createorder", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(orderData),
-//     })
-//       .then((res) => res.json())
-//       .then((data) => {
-//         console.log("Order saved to database:", data);
-//         localStorage.removeItem("swadbite_order");
-//       })
-//       .catch((err) => {
-//         console.error("Error saving order:", err);
-//         localStorage.removeItem("swadbite_saved"); // allow retry on failure
-//       });
-//   }
-// }, []);
-
-
-//   // Optional cleanup: remove flag when leaving the page
-//   useEffect(() => {
-//     return () => {
-//       localStorage.removeItem("swadbite_saved");
-//     };
-//   }, []);
 
   return (
     <div className="relative min-h-screen bg-gray-50 overflow-hidden font-sans">
@@ -54,7 +21,7 @@ function PaymentSuccess() {
             Payment Successful!
           </h1>
           <p className="text-gray-600 mb-6 text-sm md:text-base hover:text-gray-700 transition-colors duration-300">
-            Thank you for your order. Your transaction has been completed successfully. A confirmation email and receipt have been sent to your registered email.
+            Thank you for your order. Your transaction has been completed successfully.Your order will be processed shortly.
           </p>
 
           <div className="mt-6 animate-float">

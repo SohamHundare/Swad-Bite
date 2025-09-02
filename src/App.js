@@ -6,7 +6,6 @@ import Footer from "./SwadBite/HomePAge/Footer";
 import WelcomePage from "./SwadBite/StartingPages/WelcomePage";
 import LoginModal from "./SwadBite/StartingPages/LoginPage";
 import SignUpModal from "./SwadBite/StartingPages/SignUpPage";
-import PlanPage from "./SwadBite/PlanePAGE/PlanePage";
 import PaymentMain from "./SwadBite/PaymentPage/PaymentMain";
 import CurtainIntro from "./SwadBite/HomePAge/CurtainIntro";
 import Explore from "./SwadBite/ExplorePage/Explore";
@@ -113,7 +112,6 @@ function App() {
         <Route path="/home" element={<HomeMain />} />
 
         {/* Other pages */}
-        <Route path="/plans" element={<PlanPage />} />
         <Route path="/WeeklyMenu1" element={<WeeklyMenuModal />} />
         <Route path="/payment/*" element={<PaymentMain />} />
         <Route path="/explore/*" element={<Explore />} />

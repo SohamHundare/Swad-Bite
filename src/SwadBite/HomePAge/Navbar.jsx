@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faUserCircle } from "@fortawesome/free-solid-svg-icons"; // added profile icon
+import { faShoppingCart} from "@fortawesome/free-solid-svg-icons"; // added profile icon
 import { FaBars } from "react-icons/fa";
 import logo from "../Images/Logo.png";
 import { useContext } from "react";
@@ -11,7 +11,7 @@ import ProfileMenu from "./ProfileMenu";
 const Navbar = ({ onTriggerCurtain }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  //const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const location = useLocation();
 
@@ -57,8 +57,7 @@ const Navbar = ({ onTriggerCurtain }) => {
           <Link to="/home" className={linkClasses("/")}>Home</Link>
           <Link to="/explore" className={linkClasses("/explore")}>Explore</Link>
           <Link to="/feedback" className={linkClasses("/feedback")}>Feedback</Link>
-          <Link to="/order" className={linkClasses("/order")}>Order</Link>
-          <Link to="/plans" className={linkClasses("/plans")}>Plans</Link>
+          <Link to="/order" className={linkClasses("/order")}>Orders</Link>
           <Link to="/cart" className={linkClasses("/cart")}>
             <FontAwesomeIcon icon={faShoppingCart} size="lg" />Cart
           </Link>
@@ -93,8 +92,7 @@ const Navbar = ({ onTriggerCurtain }) => {
               { path: "/home", label: "Home" },
               { path: "/explore", label: "Explore" },
               { path: "/feedback", label: "Feedback" },
-              { path: "/order", label: "Order" },
-              { path: "/plans", label: "Plans" },
+              { path: "/order", label: "Orders" },
               { path: "/cart", label: <FontAwesomeIcon icon={faShoppingCart} size="lg" /> },
             ].map((item) => (
               <Link

@@ -105,6 +105,7 @@ const Cart = () => {
             <table>
               <thead>
                 <tr>
+                  <th>Select</th>
                   <th>Meal</th>
                   <th>Description</th>
                   <th>Quantity</th>
