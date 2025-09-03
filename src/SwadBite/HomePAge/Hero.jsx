@@ -11,6 +11,7 @@ const Hero = () => {
     gender: "",
     category: "",
   });
+  
 
   const [showVideo, setShowVideo] = useState(false);
   const [showThanks, setShowThanks] = useState(false);
@@ -44,8 +45,8 @@ const Hero = () => {
   };
 
 const handleSearch = (e) => {
-  e.preventDefault();
-  localStorage.setItem("selectedCity", formData.city.trim().toLowerCase());
+  e.preventDefault();                                                       
+  localStorage.setItem("selectedCity", formData.city.trim().toLowerCase());         
   localStorage.setItem("selectedLocality", formData.locality.trim().toLowerCase());
   navigate("/explore");
 };
@@ -57,6 +58,7 @@ const handleSearch = (e) => {
         showVideo ? 'backdrop-blur-sm' : ''
       }`}
     >
+      
       <div
         className={`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 transition-all ${
           showVideo ? 'pointer-events-none blur-sm' : ''
@@ -101,7 +103,9 @@ const handleSearch = (e) => {
   onSubmit={handleSearch}
 >
   <select
-    className="flex-1 min-w-[120px] border border-gray-300 rounded-md px-3 py-1.5 text-sm appearance-none bg-gray-100 cursor-not-allowed"
+    className="flex-1 min-w-[120px] border border-gray-300 rounded-md px-3 py-1.5 te
+    
+    xt-sm appearance-none bg-gray-100 cursor-not-allowed"
     name="state"
     value="maharashtra"
     disabled
@@ -116,7 +120,7 @@ const handleSearch = (e) => {
             onChange={handleChange}
           >
             <option value="">City</option>
-            <option value="mumbai">Satara</option>
+            <option value="mumbai">Mumbai</option>
             <option value="pune">Pune</option>
             <option value="ahmedabad">Ahmedabad</option>
             <option value="bengaluru">Bengaluru</option>

@@ -24,14 +24,14 @@ const Chatbot = () => {
     {
       keywords: ["subscribe", "join", "membership"],
       reply:
-        "You can subscribe by filling out our form or contacting us via WhatsApp.",
+        "You can subscribe directly by purchasing our plan or contacting us via WhatsApp.",
     },
     {
       keywords: ["price", "cost", "plan", "fees"],
       reply: "Our plans start at ₹1500/month for vegetarian meals.",
     },
     {
-      keywords: ["hello", "hi", "hey"],
+      keywords: ["hello", "hi", "hey","hii"],
       reply:
         "Hi! I'm your SwaadBite assistant. Ask me anything about food, plans, or timing!",
     },
@@ -61,6 +61,10 @@ const Chatbot = () => {
       keywords: ["offer", "discount", "deal"],
       reply: "We currently offer a 10% discount for students with valid ID cards.",
     },
+    {
+      keywords: ["bye", "goodbye", "stop"],
+      reply: "We hope to see you again soon,Thanks for using SwaadBite!",
+    },
   ];
 
   // ✅ Function to detect manual reply
@@ -76,7 +80,7 @@ const Chatbot = () => {
 
   const toggleChat = () => setIsOpen(!isOpen);
 
-  // ✅ Send message handler
+  //  Send message handler
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -84,14 +88,14 @@ const Chatbot = () => {
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
 
-    // 1️⃣ Check manual replies first
+    // 1️ Check manual replies first
     const reply = findManualReply(input);
     if (reply) {
       setMessages((prev) => [...prev, { text: reply, sender: "bot" }]);
       return;
     }
 
-    // 2️⃣ Otherwise show "Typing..." and call backend AI
+    // 2️ Otherwise show "Typing..." and call backend AI
     setMessages((prev) => [
       ...prev,
       { text: "Typing...", sender: "bot", temp: true },
@@ -128,14 +132,14 @@ const Chatbot = () => {
         <img
           src={icon}
           alt="chatbot"
-          className="w-9 h-9 rounded-full bg-white p-1"
+          className="w-11 h-11 rounded-full bg-white p-1"
         />
       </button>
 
       {/* Chat Window */}
       {isOpen && (
         <div className="w-80 h-[500px] bg-white shadow-2xl rounded-xl flex flex-col overflow-hidden mt-4 animate-slide-up">
-          <div className="bg-orange-500 text-white text-lg font-bold p-3">
+          <div className="bg-orange-500 text-white rounded-md text-lg font-bold p-3">
             SwaadBite Assistant
           </div>
 
@@ -146,7 +150,7 @@ const Chatbot = () => {
                 key={idx}
                 className={`p-2 rounded-lg max-w-[75%] ${
                   msg.sender === "user"
-                    ? "bg-orange-500 text-white self-end ml-auto"
+                    ? "bg-orange-400 text-white self-end ml-auto"
                     : "bg-gray-200 text-black self-start"
                 }`}
               >
@@ -166,7 +170,7 @@ const Chatbot = () => {
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
             <button
-              className="bg-orange-500 text-white px-4"
+              className="bg-orange-500 text-white px-4 rounded-3xl hover:bg-orange-600"
               onClick={sendMessage}
             >
               Send

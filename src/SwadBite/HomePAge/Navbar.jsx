@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart} from "@fortawesome/free-solid-svg-icons"; // added profile icon
+import { faShoppingCart} from "@fortawesome/free-solid-svg-icons"; // added cart icon
 import { FaBars } from "react-icons/fa";
 import logo from "../Images/Logo.png";
 import { useContext } from "react";
@@ -11,7 +11,7 @@ import ProfileMenu from "./ProfileMenu";
 const Navbar = ({ onTriggerCurtain }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
-  //const [showProfileMenu, setShowProfileMenu] = useState(false);
+
 
   const location = useLocation();
 

@@ -69,11 +69,6 @@ function App() {
           />
         )}
 
-        {/* Login and Signup */}
-        {/* <Route
-  path="/Login"
-  element={<><HomeMain /><LoginModal onSuccess={() => navigate("/home")} /></>}
-/> */}
 <Route
   path="/Login"
   element={
@@ -88,10 +83,8 @@ function App() {
     </>
   }
 />
-{/* <Route
-  path="/SignUp"
-  element={<><HomeMain /><SignUpModal onSuccess={() => navigate("/home")} /></>}
-/> */}<Route
+
+<Route
   path="/SignUp"
   element={
     <>

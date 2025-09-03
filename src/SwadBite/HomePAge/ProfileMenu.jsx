@@ -36,6 +36,7 @@ function ProfileMenu({ onLogout }) {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
+      
       reader.onload = () => {
         setPhoto(reader.result);
 
@@ -77,6 +78,7 @@ function ProfileMenu({ onLogout }) {
           cursor: "pointer",
           overflow: "hidden",
         }}
+
       >
         {photo ? (
           <img

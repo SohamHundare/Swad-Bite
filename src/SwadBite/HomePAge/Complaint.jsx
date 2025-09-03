@@ -1,4 +1,3 @@
-// Complaint.jsx
 import React, { useState } from 'react';
 import './Complaint.css';
 
@@ -26,11 +25,11 @@ export default function Complaint({ formData, setFormData, setShowComplaint }) {
           description: "",
         });
       } else {
-        alert("❌ Failed to store complaint.");
+        alert("Failed to store complaint.");
       }
     } catch (error) {
       console.error(error);
-      alert("⚠️ Error submitting complaint.");
+      alert("Error submitting complaint.");
     }
   };
 
