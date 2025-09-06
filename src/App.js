@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-import { Routes, Route } from "react-router-dom";
-=======
 import { Routes, Route, useNavigate } from "react-router-dom";
->>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
 import HomeMain from "./SwadBite/HomePAge/HomeMain";
 import Cart from "./SwadBite/CartPage/Cart";
 import Footer from "./SwadBite/HomePAge/Footer";
@@ -19,8 +15,8 @@ import FeedbackForm from "./SwadBite/FeedbackPage/FeedbackForm";
 import WeeklyMenuModal from "./SwadBite/StartingPages/WeeklyMenu1";
 import { useContext } from "react";
 import { AuthContext } from "./SwadBite/HomePAge/AuthContext";
-
 import "./App.css";
+import PlanPage from "./SwadBite/PlanePAGE/PlanePage";
 
 function App() {
   const [showCurtain, setShowCurtain] = useState(() => {
@@ -52,38 +48,6 @@ function App() {
   }
 
   return (
-<<<<<<< HEAD
-    <>
-      {/* Helmet for favicon and title */}
-
-      <div className="App">
-        <Routes>
-          {/* Home page */}
-          <Route path="/" element={<HomeMain />} />
-          <Route path="/home" element={<HomeMain />} />
-
-          {/* Login and Signup */}
-          <Route path="/login" element={<><HomeMain blur /><LoginModal /></>} />
-          <Route path="/signup" element={<><HomeMain blur /><SignUpModal /></>} />
-
-          {/* Other pages */}
-          <Route path="/plans" element={<PlanPage />} />
-          <Route path="/WeeklyMenu1" element={<WeeklyMenuModal />} />
-          <Route path="/payment/*" element={<PaymentMain />} />
-          <Route path="/explore/*" element={<Explore />} />
-          <Route path="/WeeklyMenu" element={<WeeklyMenu />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/feedback" element={<FeedbackForm />} />
-          <Route path="/Cart" element={<Cart />} />
-        </Routes>
-        <Footer />
-      </div>
-    </>
-  );
-}
-
-export default App;
-=======
     <div className="App">
       <Routes>
         {/* Step 2: Welcome Page */}
@@ -148,6 +112,7 @@ export default App;
         <Route path="/order" element={<Order />} />
         <Route path="/feedback" element={<FeedbackForm />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="*" element={<PlanPage />} />
       </Routes>
 
       {/* Footer always visible except on WelcomePage */}
@@ -157,4 +122,3 @@ export default App;
 }
 
 export default App;
->>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e

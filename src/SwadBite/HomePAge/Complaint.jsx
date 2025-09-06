@@ -1,35 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import './Complaint.css';
-
-export default function Complaint({ formData, setFormData, submitted, setSubmitted, setShowComplaint }) {
-  
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/complaints', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        setSubmitted(true);
-        setFormData({
-          name: '',
-          phone: '',
-          place: '',
-          foodType: '',
-          messName: '',
-          complaintType: '',
-          description: ''
-        });
-      } else {
-        alert('Failed to submit complaint.');
-      }
-    } catch (error) {
-      console.error(error);
-      alert('Error submitting complaint.');
-=======
 import React, { useState } from 'react';
 import './Complaint.css';
 
@@ -62,7 +30,6 @@ export default function Complaint({ formData, setFormData, setShowComplaint }) {
     } catch (error) {
       console.error(error);
       alert("Error submitting complaint.");
->>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
     }
   };
 
@@ -78,7 +45,6 @@ export default function Complaint({ formData, setFormData, setShowComplaint }) {
           </div>
         ) : (
           <form className="complaint-form">
-            {/* Form fields */}
             <div className="form-group">
               <label>Name</label>
               <input

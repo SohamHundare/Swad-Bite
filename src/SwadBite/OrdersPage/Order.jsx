@@ -101,7 +101,7 @@ const Order = () => {
     // localStorage.removeItem("swadbite_selectedMeal");
     // localStorage.removeItem("swadbite_selectedPlan");
     setOrderItems([]);
-+    setOrderPlaced(true);
+        setOrderPlaced(true);
     // Refresh orders immediately
     await fetchOrders();
 
