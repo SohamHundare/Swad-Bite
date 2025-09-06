@@ -33,6 +33,9 @@
     transform: rotate(360deg);
   }
 }
-
+.blurred-bg {
+  filter: blur(6px);
+  position: relative;
+}
 
 

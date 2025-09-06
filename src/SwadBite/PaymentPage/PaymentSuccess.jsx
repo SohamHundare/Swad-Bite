@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
@@ -90,6 +91,15 @@ function PaymentSuccess() {
       }
     }
   }, [items, total, source, meal, plan]);
+=======
+
+import { CheckBadgeIcon } from '@heroicons/react/24/solid';
+import bgImage from '../Images/MessImage.png';
+import logo from '../Images/Logo.png';
+
+
+function PaymentSuccess() {
+>>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
 
   return (
     <div className="relative min-h-screen bg-gray-50 overflow-hidden font-sans">
@@ -106,8 +116,12 @@ function PaymentSuccess() {
             Payment Successful!
           </h1>
           <p className="text-gray-600 mb-6 text-sm md:text-base hover:text-gray-700 transition-colors duration-300">
+<<<<<<< HEAD
             Thank you for your order. Your transaction has been completed
             successfully.
+=======
+            Thank you for your order. Your transaction has been completed successfully.Your order will be processed shortly.
+>>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
           </p>
 
           <div className="mt-6 animate-float">

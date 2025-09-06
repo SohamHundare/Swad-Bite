@@ -7,7 +7,7 @@ export default function HowItWorks() {
       <h3 className="how-title">How it Works !!</h3>
       <h2 className="how-subtitle">What We Serve</h2>
       <p className="how-description">
-        Product quality is our priority, and always guarantee Halal and safety unit is in your hands.
+        Product quality is our priority, and always guarantee freshness and try to maintain the highest standards.
       </p>
 
       <div className="how-cards">

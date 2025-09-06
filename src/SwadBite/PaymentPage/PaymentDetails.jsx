@@ -1,29 +1,49 @@
-import React, { useState } from 'react';
-import bgImage from '../Images/MessImage.png';
-import foodImg from '../Images/foodImg.png';
-import secureImg from './Secure.png';
-
+import React, { useState, useEffect } from "react";
+import bgImage from "../Images/MessImage.png";
+import foodImg from "../Images/foodImg.png";
+import secureImg from "./Secure.png";
 
 function PaymentDetailsPage() {
+  const [orderItems, setOrderItems] = useState([]);
 
-  const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
-  const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+  useEffect(() => {
+    const rawCart = JSON.parse(localStorage.getItem("swadbite_cart")) || [];
+    const savedCart = Array.isArray(rawCart) ? rawCart : rawCart.items || [];
 
-  const price = plan?.price || meal?.price || 0;
-  const gst = +(price * 0.18).toFixed(2);
-  const maintenance = +(price * 0.02).toFixed(2);
-  const total = +(price + gst + maintenance).toFixed(2);                                              
+    const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
+    const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+
+    if (savedCart.length > 0) {
+      setOrderItems(
+        savedCart.map((item) => ({ ...item, quantity: item.quantity || 1 }))
+      );
+    } else if (meal) {
+      setOrderItems([{ ...meal, quantity: meal.quantity || 1 }]);
+    } else if (plan) {
+      setOrderItems([{ ...plan, quantity: plan.quantity || 1 }]);
+    } else {
+      setOrderItems([]);
+    }
+  }, []);
+
+  const baseFee = orderItems.reduce(
+    (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
+    0
+  );
+  const gst = +(baseFee * 0.08).toFixed(2);
+  const maintenance = +(baseFee * 0.02).toFixed(2);
+  const total = +(baseFee + gst + maintenance).toFixed(2);
 
   const [isTakeaway, setIsTakeaway] = useState(false);
-  const isLoggedIn = false;
-  const [error, setError] = useState('');
+  const isLoggedIn = localStorage.getItem("user") !== null;
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    address: '',
-    city: '',
-    pincode: '',
+    name: "",
+    phone: "",
+    address: "",
+    city: "",
+    pincode: "",
   });
 
   const handleChange = (e) => {
@@ -45,45 +65,62 @@ function PaymentDetailsPage() {
 
   const handlePay = async (e) => {
     e.preventDefault();
-
     if (!isFormValid()) {
-      setError('Please fill all required fields.');
+      setError("Please fill all required fields.");
       return;
     }
+    setError("");
 
-    setError('');
+    const userId = localStorage.getItem("swadbite_userId") || "guest";
 
-    // 1️⃣ Save order data to localStorage (for later use in PaymentSuccess)
-    const order = {
+    // Make sure items have price and quantity
+    const items = orderItems.map((item) => ({
+      name: item.mealName || item.planName || "Food",
+      price: item.price,
+      quantity: item.quantity || 1,
+    }));
+
+    const orderPayload = {
+      userId,
       customerName: formData.name,
-      deliveryAddress: isTakeaway ? "" : `${formData.address}, ${formData.city}, ${formData.pincode}`,
       isTakeaway,
-      paymentMethod: "card",
-      totalAmount: total ,
-      items: [
-        {
-          name: meal?.name || plan?.name || "Unknown Meal" ,
-          quantity: 1,
-          price:  total ,
-        },
-      ],
+      items,//items is an array we built
+      amount: total,
+      deliveryAddress: isTakeaway ? "Takeaway" : formData.address,//newly added later
     };
 
-    localStorage.setItem("swadbite_order", JSON.stringify(order));
-
     try {
-      // 2️⃣ Create Stripe Checkout session
-      const res = await fetch("http://localhost:5000/api/stripe/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: total * 100 }),
-      });
+      const res = await fetch(
+        "https://swadbite-backend-2.onrender.com/api/stripe/create-checkout-session",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderPayload),
+        }
+      );
+      console.log("Payload being sent to backend:", orderPayload);
 
-      const data = await res.json();
+      // better error handling
+      const text = await res.text();
+      if (!res.ok) {
+        console.error(
+          "Backend responded with error:",
+          text,
+          "status:",
+          res.status
+        );
+        throw new Error(text || `Backend error ${res.status}`);
+      }
+      const data = JSON.parse(text);
 
+      if (!data.id) throw new Error("No session ID returned from backend");
+
+      // make sure Stripe.js is loaded
+      
       const stripe = window.Stripe("pk_test_51RsL62JRAH6EQmuz8uUbQq5NttBJ8BUN4K8YkdFI6wI06pQ8AowdR4Mfxg9FCIGOLAPQKNlbJvJhLbloTcirknMh00XBkKT1Nu");
-      stripe.redirectToCheckout({ sessionId: data.id });
+      await stripe.redirectToCheckout({ sessionId: data.id });
 
+      
     } catch (err) {
       console.error("Payment process error:", err);
       alert("Payment failed. Please try again.");
@@ -100,15 +137,22 @@ function PaymentDetailsPage() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 pt-12 pb-20">
         <div className="bg-white shadow-xl rounded-xl p-6 md:flex md:gap-8">
           <div className="hidden md:flex w-1/2 justify-center items-center min-h-[550px]">
-            <img src={foodImg} alt="Food" className="w-100 object-contain rounded-xl animate-float" />
+            <img
+              src={foodImg}
+              alt="Food"
+              className="w-100 object-contain rounded-xl animate-float"
+            />
           </div>
 
           <div className="w-full md:w-1/2">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2 text-center">Delivery Details</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2 text-center">
+              Delivery Details
+            </h2>
 
             {!isLoggedIn && (
               <p className="text-center text-sm text-red-600 mb-4">
-                You are not logged in. Please provide your details to continue or log in for faster checkout.
+                You are not logged in. Please provide your details to continue
+                or log in for faster checkout.
               </p>
             )}
 
@@ -126,7 +170,9 @@ function PaymentDetailsPage() {
             </div>
 
             {error && (
-              <div className="mb-3 text-red-600 text-sm text-center">{error}</div>
+              <div className="mb-3 text-red-600 text-sm text-center">
+                {error}
+              </div>
             )}
 
             <form className="space-y-3" onSubmit={handlePay}>
@@ -140,7 +186,9 @@ function PaymentDetailsPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-700">Phone Number</label>
+                <label className="block text-sm text-gray-700">
+                  Phone Number
+                </label>
                 <input
                   type="text"
                   name="phone"
@@ -152,7 +200,9 @@ function PaymentDetailsPage() {
               {!isTakeaway && (
                 <>
                   <div>
-                    <label className="block text-sm text-gray-700">Delivery Address</label>
+                    <label className="block text-sm text-gray-700">
+                      Delivery Address
+                    </label>
                     <textarea
                       name="address"
                       onChange={handleChange}
@@ -162,7 +212,9 @@ function PaymentDetailsPage() {
                   </div>
                   <div className="flex gap-3">
                     <div className="w-1/2">
-                      <label className="block text-sm text-gray-700">City</label>
+                      <label className="block text-sm text-gray-700">
+                        City
+                      </label>
                       <input
                         type="text"
                         name="city"
@@ -171,7 +223,9 @@ function PaymentDetailsPage() {
                       />
                     </div>
                     <div className="w-1/2">
-                      <label className="block text-sm text-gray-700">PIN Code</label>
+                      <label className="block text-sm text-gray-700">
+                        PIN Code
+                      </label>
                       <input
                         type="text"
                         name="pincode"
@@ -189,13 +243,21 @@ function PaymentDetailsPage() {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-gray-500 text-sm">Your payment is secured with 256-bit encryption</p>
+              <p className="text-gray-500 text-sm">
+                Your payment is secured with 256-bit encryption
+              </p>
               <img src={secureImg} alt="Secure" className="mx-auto mt-2 w-24" />
             </div>
 
+
+
+
             <div className="mt-5 text-center text-sm">
               <p className="text-gray-500">Need help with payment?</p>
-              <a href="/support" className="text-indigo-600 hover:underline font-medium">
+              <a
+                href="/support"
+                className="text-indigo-600 hover:underline font-medium"
+              >
                 Contact Support
               </a>
             </div>
@@ -206,7 +268,6 @@ function PaymentDetailsPage() {
           </div>
         </div>
       </div>
-    
     </div>
   );
 }

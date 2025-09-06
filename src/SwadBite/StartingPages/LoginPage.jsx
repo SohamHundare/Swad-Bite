@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from '../HomePAge/AuthContext'; // ✅ import AuthContext
 
 function LoginModal({ onClose }) {
   const [role, setRole] = useState('student');
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext); // ✅ get login from context
 
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -15,31 +18,43 @@ function LoginModal({ onClose }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleLogin = () => {
-    // Password rule: min 8 chars, 1 uppercase, 1 number
-    const passwordValid = /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(formData.password);
-
-    if (!formData.username || !formData.password) {
+  const handleLogin = async () => {
+    if (!formData.email || !formData.password) {
       alert('Please fill in both fields ❌');
       return;
     }
 
-    if (!passwordValid) {
-      alert('Password must be at least 8 characters long, contain 1 uppercase letter, and 1 number ❌');
-      return;
-    }
+    try {
+      const res = await axios.post('https://swadbite-backend-2.onrender.com/api/users/login', {
+        email: formData.email,
+        password: formData.password,
+      });
 
-    alert(`Logged in as ${role.toUpperCase()} ✅\nWelcome, ${formData.username}`);
+      alert(res.data.message || `Logged in as ${role.toUpperCase()} ✅`);
 
-    if (role === 'owner') {
-      localStorage.setItem('userRole', 'messowner');
-      navigate('/WeeklyMenu1');
-    } else if (role === 'student') {
-      localStorage.setItem('userRole', 'student');
-      navigate('/home');
+      // ✅ Use AuthContext login()
+      const userData = {
+        name: res.data.user?.name || "User", // if your API sends name
+        email: res.data.user?.email || formData.email,
+        role: role === 'owner' ? 'messowner' : 'student',
+      };
+
+      login(userData, res.data.token); // update context + localStorage
+
+      // ✅ Close modal
+      if (onClose) onClose();
+
+      // Navigate
+      if (role === 'owner') navigate('/WeeklyMenu1');
+      else navigate('/home');
+
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || 'Login Failed ❌');
     }
   };
 
+  // ----------- STYLES REMAIN UNCHANGED ----------
   const styles = {
     overlay: {
       position: 'fixed',
@@ -125,6 +140,7 @@ function LoginModal({ onClose }) {
       color: '#fff',
     }
   };
+  // ------------------------------------------------
 
   return (
     <div style={styles.overlay}>
@@ -151,10 +167,10 @@ function LoginModal({ onClose }) {
         </div>
 
         <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
           onChange={handleChange}
           style={styles.input}
         />
@@ -180,4 +196,4 @@ function LoginModal({ onClose }) {
   );
 }
 
-export default LoginModal;
+export default LoginModal;

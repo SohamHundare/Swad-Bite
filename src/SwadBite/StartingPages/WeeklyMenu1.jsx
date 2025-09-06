@@ -1,164 +1,188 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../Images/Logo.png';
 
-const WeeklyMenuModal = ({ onClose }) => {
+// Adjust the path as necessary
+
+function WelcomePage() {
   const navigate = useNavigate();
+  const [animate, setAnimate] = useState(false);
 
-  const [menu, setMenu] = useState({
-    Monday: '', Tuesday: '', Wednesday: '', Thursday: '',
-    Friday: '', Saturday: '', Sunday: ''
-  });
+  useEffect(() => {
+    setAnimate(true);
+  }, []);
 
-  const [message, setMessage] = useState('');
-
-  const handleMenuChange = (day, value) => {
-    setMenu({ ...menu, [day]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // ✅ Check if all fields are filled
-    const allFilled = Object.values(menu).every(value => value.trim() !== "");
-    if (!allFilled) {
-      setMessage('❌ Please fill all fields!');
-      setTimeout(() => setMessage(''), 3000);
-      return;
-    }
-
-    try {
-      const response = await fetch('http://localhost:8000/api/mess', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ menu }),
-      });
-
-      if (!response.ok) throw new Error('Failed to submit');
-
-      setMessage('✅ Menu submitted!');
-      setTimeout(() => {
-        setMessage('');
-        navigate('/home'); // ✅ after submit, go to home
-      }, 1500);
-
-    } catch (error) {
-      console.error(error);
-      setMessage('❌ Submission failed!');
-      setTimeout(() => setMessage(''), 3000);
-    }
-  };
-
-  // ✅ Matched styling from LoginModal
   const styles = {
-    overlay: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backdropFilter: 'blur(8px)',
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    keyframes: `
+      @keyframes zoomFade {
+        0% { transform: scale(0.5); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      @keyframes glowPulse {
+        0% { box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 0 0px #ffa726; }
+        50% { box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 0 15px #ffa726; }
+        100% { box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 0 0px #ffa726; }
+      }
+    `,
+    wrapper: {
+      position: 'relative',
+      backgroundColor: '#FFEDD5',
+      minHeight: '100vh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      zIndex: 999,
+      padding: '20px',
+      fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+      overflow: 'hidden',
+    },
+    background: {
+      backgroundImage:
+        'url(https://content.jdmagicbox.com/comp/def_content/indian-restaurants/indian-restaurants1-indian-restaurants-1-1yjyf.jpg)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      filter: 'blur(1.2px)',
+      zIndex: 0,
+    },
+    overlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(255, 237, 213, 0.4)',
+      zIndex: 1,
     },
     card: {
       position: 'relative',
-      backgroundColor: 'white',
-      backdropFilter: 'blur(15px)',
+      zIndex: 2,
+      backdropFilter: 'blur(10px)',
+      backgroundColor: 'rgba(255, 255, 255, 0.25)',
+      border: '1px solid rgba(255,255,255,0.3)',
       padding: '30px',
-      borderRadius: '16px',
-      boxShadow: '0 4px 25px rgba(0,0,0,0.3)',
+      borderRadius: '20px',
+      boxShadow: '0 8px 25px rgba(0,0,0,0.1)',
       width: '100%',
-      maxWidth: '380px',
-      height: '75vh',
-      overflowY: 'auto',
+      maxWidth: '420px',
       textAlign: 'center',
-      zIndex: 1000,
-      color: '#fff',
+      transform: animate ? 'translateY(0)' : 'translateY(50px)',
+      opacity: animate ? 1 : 0,
+      transition: 'all 0.6s ease',
     },
-    closeButton: {
-      position: 'absolute',
-      top: '15px',
-      right: '15px',
-      background: 'none',
-      border: 'none',
-      fontSize: '24px',
-      color: 'red',
-      cursor: 'pointer'
+    logo: {
+      width: '90px',
+      height: '90px',
+      margin: '0 auto 5px',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.15), 0 0 10px #ffa726',
+      animation: animate
+        ? 'zoomFade 0.8s ease-out, glowPulse 2s infinite ease-in-out'
+        : 'none',
+    },
+    tagline: {
+      fontSize: '12px',
+      marginTop: '-5px',
+      marginBottom: '12px',
+      color: '#444',
     },
     heading: {
-      fontSize: '24px',
-      marginBottom: '20px',
-      color: '#FACC15',
-    },
-    inputGroup: {
-      marginBottom: '12px',
-      textAlign: 'left',
-    },
-    label: {
-      display: 'block',
-      marginBottom: '4px',
+      fontSize: '28px',
+      marginBottom: '10px',
+      color: '#ff5722',
       fontWeight: 'bold',
-      color: '#fff',
-      fontSize: '14px',
+      textShadow: '1px 1px 2px rgba(0,0,0,0.2)',
     },
-    input: {
-      width: '100%',
-      padding: '12px',
-      borderRadius: '8px',
-      border: '1px solid #FCD3A7',
-      backgroundColor: '#fff',
-      fontSize: '14px',
-      color: '#000',
+    quote: {
+      fontSize: '15px',
+      fontStyle: 'italic',
+      color: '#7c3aed',
+      marginBottom: '20px',
     },
-    submitBtn: {
-      padding: '12px',
-      width: '100%',
-      borderRadius: '8px',
-      backgroundColor: '#F97316',
+    button: {
+      padding: '12px 22px',
+      minWidth: '110px',
+      borderRadius: '10px',
+      backgroundColor: '#f97316',
       color: 'white',
       border: 'none',
-      fontSize: '15px',
+      fontSize: '14px',
+      fontWeight: '600',
       cursor: 'pointer',
-      marginTop: '10px',
+      margin: '8px',
+      transition: 'all 0.3s ease',
+      transform: 'scale(1)',
     },
-    message: {
-      marginTop: '10px',
-      fontWeight: 'bold',
+    buttonHover: {
+      backgroundColor: '#ea580c',
+    },
+    footer: {
+      fontSize: '11px',
+      color: '#666',
+      marginTop: '25px',
     },
   };
 
   return (
-    <div style={styles.overlay}>
-      <div style={styles.card}>
-        <button onClick={() => navigate('/home')} style={styles.closeButton}>×</button>
-        <h2 style={styles.heading}>Weekly Menu Entry</h2>
+    <>
+      
+      <style>{styles.keyframes}</style>
 
-        <form onSubmit={handleSubmit}>
-          {Object.keys(menu).map((day) => (
-            <div key={day} style={styles.inputGroup}>
-              <label style={styles.label}>{day}:</label>
-              <input
-                type="text"
-                value={menu[day]}
-                onChange={(e) => handleMenuChange(day, e.target.value)}
-                placeholder={`Enter menu for ${day}`}
-                style={styles.input}
-                required
-              />
-            </div>
-          ))}
+      <div style={styles.wrapper}>
+        <div style={styles.background}></div>
+        <div style={styles.overlay}></div>
 
-          <button type="submit" style={styles.submitBtn}>Submit Menu</button>
-          {message && <p style={styles.message}>{message}</p>}
-        </form>
+        <div style={styles.card}>
+          <img src={logo} alt="SwadBite Logo" style={styles.logo} />
+
+          <p style={styles.tagline}>Your daily taste of homemade happiness 🍛</p>
+
+          <h1 style={styles.heading}>Welcome to SwadBite 🍽️</h1>
+          <p style={styles.quote}>
+            “Good food is the foundation of genuine happiness.” 😋
+          </p>
+
+          <div>
+            <button
+              style={styles.button}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = styles.buttonHover.backgroundColor;
+                e.target.style.transform = 'scale(1.05)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = styles.button.backgroundColor;
+                e.target.style.transform = 'scale(1)';
+              }}
+              onClick={() => navigate('/signup')}
+            >
+              Sign Up
+            </button>
+
+            <button
+              style={styles.button}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = styles.buttonHover.backgroundColor;
+                e.target.style.transform = 'scale(1.05)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = styles.button.backgroundColor;
+                e.target.style.transform = 'scale(1)';
+              }}
+              onClick={() => navigate('/login')}
+            >
+              Login
+            </button>
+          </div>
+
+          <p style={styles.footer}>© 2025 SwadBite. All rights reserved.</p>
+        </div>
       </div>
-    </div>
+    </>
   );
-};
+}
 
-export default WeeklyMenuModal;
+export default WelcomePage;

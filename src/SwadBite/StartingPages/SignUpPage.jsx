@@ -1,30 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from '../HomePAge/AuthContext';   // ⬅️ import AuthContext
 
 function SignUpModal({ onClose }) {
-  const [role, setRole] = useState('student');
+  const [role, setRole] = useState('student'); 
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);   // ⬅️ access login function
 
   const [formData, setFormData] = useState({
     name: '',
     password: '',
     email: '',
-    photo: null,
     messName: ''
   });
 
   const [passwordError, setPasswordError] = useState('');
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'photo') {
-      setFormData({ ...formData, photo: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-      if (name === 'password') {
-        validatePassword(value);
-      }
-    }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (name === 'password') validatePassword(value);
   };
 
   const validatePassword = (password) => {
@@ -51,30 +47,54 @@ function SignUpModal({ onClose }) {
     }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (passwordError) {
       alert('Please fix the password requirements ❌');
       return;
     }
 
     if (role === 'student') {
-      if (formData.name && formData.password && formData.email && formData.photo) {
-        alert(`Signed up as STUDENT ✅\nWelcome, ${formData.name}`);
-        navigate('/home');
-      } else {
-        alert('Please fill all student fields ❌');
+      if (!(formData.name && formData.password && formData.email)) {
+        alert('Please fill all student fields including email ❌');
+        return;
       }
     } else {
-      if (formData.name && formData.messName && formData.password) {
-        alert(`Signed up as MESS OWNER ✅\nWelcome, ${formData.name}`);
-        navigate('/WeeklyMenu1');
-      } else {
-        alert('Please fill all owner fields ❌');
+      if (!(formData.name && formData.messName && formData.password && formData.email)) {
+        alert('Please fill all owner fields including email ❌');
+        return;
       }
+    }
+
+    try {
+      const backendRole = role === 'owner' ? 'owner' : 'student';
+      const payload = {
+        name: formData.name,
+        password: formData.password,
+        email: formData.email,
+        role: backendRole,
+      };
+      if (backendRole === 'owner') payload.messName = formData.messName;
+
+      const res = await axios.post('https://swadbite-backend-2.onrender.com/api/users/signup', payload);
+
+      // ✅ Save to AuthContext
+      const userData = res.data.user;   // assuming backend returns user object
+      const tokenData = res.data.token; // assuming backend returns token
+      login(userData, tokenData);       // store in context + localStorage
+
+      alert(res.data.message || 'Sign Up Successful ✅');
+
+      // ✅ Navigate based on role
+      if (backendRole === 'student') navigate('/home');
+      else navigate('/WeeklyMenu1');
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || 'Sign Up Failed ❌');
     }
   };
 
-  const styles = { /* ⬅ unchanged — same as your original */ 
+  // ----------- STYLES REMAIN UNCHANGED ----------
+  const styles = { 
     overlay: {
       position: 'fixed',
       top: 0,
@@ -165,6 +185,7 @@ function SignUpModal({ onClose }) {
       color: '#fff',
     }
   };
+  // ------------------------------------------------
 
   return (
     <div style={styles.overlay}>
@@ -218,13 +239,6 @@ function SignUpModal({ onClose }) {
               onChange={handleChange}
               style={styles.input}
             />
-            <input
-              type="file"
-              name="photo"
-              accept="image/*"
-              onChange={handleChange}
-              style={styles.input}
-            />
           </>
         )}
 
@@ -235,6 +249,14 @@ function SignUpModal({ onClose }) {
               name="messName"
               placeholder="Mess Name"
               value={formData.messName}
+              onChange={handleChange}
+              style={styles.input}
+            />
+            <input
+              type="email"          // Added email input for owner
+              name="email"
+              placeholder="Email"
+              value={formData.email}
               onChange={handleChange}
               style={styles.input}
             />
@@ -262,4 +284,4 @@ function SignUpModal({ onClose }) {
   );
 }
 
-export default SignUpModal;
+export default SignUpModal;

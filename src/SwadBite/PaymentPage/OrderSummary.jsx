@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< HEAD
 import Navbar from "../HomePAge/Navbar";
 import { useNavigate } from "react-router-dom";
 import { saveOrder } from "../services/api";
+=======
+>>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
 
 function OrderSummary() {
   const [orderItems, setOrderItems] = useState([]);
@@ -9,6 +12,7 @@ function OrderSummary() {
   const navigate = useNavigate();
 
   useEffect(() => {
+<<<<<<< HEAD
     const cart = JSON.parse(localStorage.getItem("swadbite_cart")) || [];
     const selectedMeal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
     const selectedPlan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
@@ -16,13 +20,44 @@ function OrderSummary() {
     if (cart.length > 0) setOrderItems(cart);
     else if (selectedMeal) setOrderItems([selectedMeal]);
     else if (selectedPlan) setOrderItems([selectedPlan]);
+=======
+    const rawCart = JSON.parse(localStorage.getItem("swadbite_cart")) || [];
+    const savedCart = Array.isArray(rawCart) ? rawCart : rawCart.items || [];
+
+    const selectedMeal = JSON.parse(
+      localStorage.getItem("swadbite_selectedMeal")
+    );
+    const selectedPlan = JSON.parse(
+      localStorage.getItem("swadbite_selectedPlan")
+    );
+
+    if (savedCart.length > 0) {
+      setOrderItems(
+        savedCart.map((item) => ({ ...item, quantity: item.quantity || 1 }))
+      );
+    } else if (selectedMeal) {
+      setOrderItems([
+        { ...selectedMeal, quantity: selectedMeal.quantity || 1 },
+      ]);
+    } else if (selectedPlan) {
+      setOrderItems([
+        { ...selectedPlan, quantity: selectedPlan.quantity || 1 },
+      ]);
+    } else {
+      setOrderItems([]);
+    }
+>>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
   }, []);
 
   const baseFee = orderItems.reduce(
     (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
     0
   );
+<<<<<<< HEAD
   const gst = +(baseFee * 0.18).toFixed(2);
+=======
+  const gst = +(baseFee * 0.08).toFixed(2);
+>>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
   const maintenance = +(baseFee * 0.02).toFixed(2);
   const total = +(baseFee + gst + maintenance).toFixed(2);
 
@@ -65,7 +100,6 @@ function OrderSummary() {
   if (orderItems.length === 0 && !orderPlaced) {
     return (
       <>
-        <Navbar />
         <div className="flex justify-center items-center min-h-screen">
           <p>No order found. Please select a meal, plan, or cart items.</p>
         </div>
@@ -75,16 +109,22 @@ function OrderSummary() {
 
   return (
     <>
-      <Navbar />
       <div className="space-y-6 p-6">
         <div className="bg-white rounded-xl shadow-md overflow-hidden transition duration-200 hover:scale-105">
           <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800">Order Summary</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Order Summary
+            </h2>
           </div>
           <div className="p-6 space-y-4">
             {orderItems.map((item, index) => (
-              <div key={index} className="flex justify-between text-gray-600 mb-2">
-                <span>{item.mealName || item.planName} x {item.quantity}</span>
+              <div
+                key={index}
+                className="flex justify-between text-gray-600 mb-2"
+              >
+                <span>
+                  {item.mealName || item.planName} x {item.quantity}
+                </span>
                 <span>₹{(item.price || 0) * (item.quantity || 1)}</span>
               </div>
             ))}
@@ -93,7 +133,7 @@ function OrderSummary() {
               <span>₹{baseFee}</span>
             </div>
             <div className="flex justify-between text-gray-600">
-              <span>GST (18%)</span>
+              <span>GST (08%)</span>
               <span>₹{gst}</span>
             </div>
             <div className="flex justify-between text-gray-600">

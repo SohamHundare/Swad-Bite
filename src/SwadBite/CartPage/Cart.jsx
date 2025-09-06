@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../HomePAge/Navbar";
-import './Cart.css';
+import "./Cart.css";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -16,9 +16,12 @@ const Cart = () => {
       savedCart = savedCart.items;
     }
 
-    const savedSelected = JSON.parse(localStorage.getItem("swadbite_selectedItems")) || [];
+    const savedSelected =
+      JSON.parse(localStorage.getItem("swadbite_selectedItems")) || [];
 
-    setCart(savedCart.map(item => ({ ...item, quantity: item.quantity || 1 })));
+    setCart(
+      savedCart.map((item) => ({ ...item, quantity: item.quantity || 1 }))
+    );
     setSelectedItems(savedSelected);
   }, []);
 
@@ -34,7 +37,7 @@ const Cart = () => {
 
   // Quantity increase/decrease
   const handleQuantityChange = (index, delta) => {
-    setCart(prevCart => {
+    setCart((prevCart) => {
       const updated = [...prevCart];
       const item = updated[index];
       if (!item) return prevCart;
@@ -46,24 +49,27 @@ const Cart = () => {
 
   // Remove item
   const handleRemove = (index) => {
-    setCart(prevCart => {
+    setCart((prevCart) => {
       const updated = prevCart.filter((_, i) => i !== index);
       localStorage.setItem("swadbite_cart", JSON.stringify(updated));
       return updated;
     });
 
-    setSelectedItems(prevSelected => {
-      const updatedSelected = prevSelected.filter(i => i !== index);
-      localStorage.setItem("swadbite_selectedItems", JSON.stringify(updatedSelected));
+    setSelectedItems((prevSelected) => {
+      const updatedSelected = prevSelected.filter((i) => i !== index);
+      localStorage.setItem(
+        "swadbite_selectedItems",
+        JSON.stringify(updatedSelected)
+      );
       return updatedSelected;
     });
   };
 
   // Select / deselect items
   const handleSelectItem = (index) => {
-    setSelectedItems(prevSelected => {
+    setSelectedItems((prevSelected) => {
       const updated = prevSelected.includes(index)
-        ? prevSelected.filter(i => i !== index)
+        ? prevSelected.filter((i) => i !== index)
         : [...prevSelected, index];
       localStorage.setItem("swadbite_selectedItems", JSON.stringify(updated));
       return updated;
@@ -72,16 +78,19 @@ const Cart = () => {
 
   // Proceed to payment
   const handlePayment = () => {
-   const itemsToPay = selectedItems.map(idx => cart[idx]).filter(Boolean);
-  if (itemsToPay.length === 0) return;
+    const itemsToPay = selectedItems.map((idx) => cart[idx]).filter(Boolean);
+    if (itemsToPay.length === 0) return;
 
-  localStorage.setItem("swadbite_cart", JSON.stringify({ items: itemsToPay }));
+    localStorage.setItem(
+      "swadbite_cart",
+      JSON.stringify({ items: itemsToPay })
+    );
 
-  // Clear selected meal/plan to avoid conflicts
-  localStorage.removeItem("swadbite_selectedMeal");
-  localStorage.removeItem("swadbite_selectedPlan");
+    // Clear selected meal/plan to avoid conflicts
+    localStorage.removeItem("swadbite_selectedMeal");
+    localStorage.removeItem("swadbite_selectedPlan");
 
-  navigate("/payment");
+    navigate("/payment");
   };
 
   return (
@@ -96,6 +105,7 @@ const Cart = () => {
             <table>
               <thead>
                 <tr>
+                  <th>Select</th>
                   <th>Meal</th>
                   <th>Description</th>
                   <th>Quantity</th>
@@ -107,23 +117,58 @@ const Cart = () => {
                 {cart.map((item, index) => (
                   <tr
                     key={index}
-                    className={selectedItems.includes(index) ? 'selected-row' : ''}
-                    onClick={() => handleSelectItem(index)}
-                    style={{ cursor: 'pointer' }}
+                    className={
+                      selectedItems.includes(index) ? "selected-row" : ""
+                    }
+                    onClick={() => handleSelectItem(index)} // ✅ toggle when row is clicked
+                    style={{ cursor: "pointer" }}
                   >
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedItems.includes(index)}
+                        onClick={(e) => e.stopPropagation()} // ✅ prevent double toggle
+                        onChange={() => handleSelectItem(index)}
+                      />
+                    </td>
+
                     <td className="meal-info">
-                      <img src={item.image || ""} alt={item.mealName || ""} style={{ width: 50, height: 50 }} />
+                      <img
+                        src={item.image || ""}
+                        alt={item.mealName || "Meal"}
+                        style={{ width: 50, height: 50 }}
+                      />
                       <span>{item.mealName || "Unknown Meal"}</span>
                     </td>
                     <td>{item.description || "-"}</td>
                     <td>
-                      <button onClick={e => { e.stopPropagation(); handleQuantityChange(index, -1); }}>-</button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // ✅ avoid toggling checkbox when adjusting qty
+                          handleQuantityChange(index, -1);
+                        }}
+                      >
+                        -
+                      </button>
                       <span className="quantity">{item.quantity}</span>
-                      <button onClick={e => { e.stopPropagation(); handleQuantityChange(index, 1); }}>+</button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleQuantityChange(index, 1);
+                        }}
+                      >
+                        +
+                      </button>
                     </td>
                     <td>₹{(item.price || 0) * (item.quantity || 1)}</td>
                     <td>
-                      <button className="remove-btn" onClick={e => { e.stopPropagation(); handleRemove(index); }}>
+                      <button
+                        className="remove-btn"
+                        onClick={(e) => {
+                          e.stopPropagation(); // ✅ don’t toggle checkbox when removing
+                          handleRemove(index);
+                        }}
+                      >
                         Remove
                       </button>
                     </td>

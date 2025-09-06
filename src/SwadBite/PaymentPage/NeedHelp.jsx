@@ -15,7 +15,7 @@ function NeedHelp(params) {
                         </svg>
                         Call us at:
                     </span>
-                    <span className="font-medium text-gray-800">+1 (123) 456-7890</span>
+                    <span className="font-medium text-gray-800">+91 1234567890</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                     <span className="flex items-center gap-2">

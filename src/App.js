@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
+<<<<<<< HEAD
 import { Routes, Route } from "react-router-dom";
+=======
+import { Routes, Route, useNavigate } from "react-router-dom";
+>>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
 import HomeMain from "./SwadBite/HomePAge/HomeMain";
 import Cart from "./SwadBite/CartPage/Cart";
-import Footer from "./SwadBite/PaymentPage/Footer";
+import Footer from "./SwadBite/HomePAge/Footer";
 import WelcomePage from "./SwadBite/StartingPages/WelcomePage";
 import LoginModal from "./SwadBite/StartingPages/LoginPage";
 import SignUpModal from "./SwadBite/StartingPages/SignUpPage";
-import PlanPage from "./SwadBite/PlanePAGE/PlanePage";
 import PaymentMain from "./SwadBite/PaymentPage/PaymentMain";
 import CurtainIntro from "./SwadBite/HomePAge/CurtainIntro";
 import Explore from "./SwadBite/ExplorePage/Explore";
@@ -14,13 +17,23 @@ import WeeklyMenu from "./SwadBite/MenuPage/WeeklyMenu";
 import Order from "./SwadBite/OrdersPage/Order";
 import FeedbackForm from "./SwadBite/FeedbackPage/FeedbackForm";
 import WeeklyMenuModal from "./SwadBite/StartingPages/WeeklyMenu1";
+import { useContext } from "react";
+import { AuthContext } from "./SwadBite/HomePAge/AuthContext";
 
-import './App.css';
+import "./App.css";
 
 function App() {
   const [showCurtain, setShowCurtain] = useState(() => {
     return !sessionStorage.getItem("hasSeenCurtain");
   });
+
+  const [showWelcome, setShowWelcome] = useState(() => {
+    return !sessionStorage.getItem("hasSeenWelcome");
+  });
+
+   const { login } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (showCurtain) {
@@ -28,11 +41,18 @@ function App() {
     }
   }, [showCurtain]);
 
+  useEffect(() => {
+    if (showWelcome) {
+      sessionStorage.setItem("hasSeenWelcome", "true");
+    }
+  }, [showWelcome]);
+
   if (showCurtain) {
     return <CurtainIntro onFinish={() => setShowCurtain(false)} />;
   }
 
   return (
+<<<<<<< HEAD
     <>
       {/* Helmet for favicon and title */}
 
@@ -63,3 +83,78 @@ function App() {
 }
 
 export default App;
+=======
+    <div className="App">
+      <Routes>
+        {/* Step 2: Welcome Page */}
+        {showWelcome && (
+          <Route
+            path="/"
+            element={
+              <WelcomePage
+                onLogin={() => {
+                  setShowWelcome(false);
+                  navigate("/Login");
+                }}
+                onSignUp={() => {
+                  setShowWelcome(false);
+                  navigate("/SignUp");
+                }}
+              />
+            }
+          />
+        )}
+
+<Route
+  path="/Login"
+  element={
+    <>
+      <HomeMain />
+      <LoginModal
+        onSuccess={(userData) => {
+          login(userData); // save in context + localStorage
+          navigate("/");
+        }}
+      />
+    </>
+  }
+/>
+
+<Route
+  path="/SignUp"
+  element={
+    <>
+      <HomeMain />
+      <SignUpModal
+        onSuccess={(userData) => {
+          login(userData); // save in context + localStorage
+          navigate("/");
+        }}
+      />
+    </>
+  }
+/>
+
+
+        {/* Home page */}
+        <Route path="/" element={<HomeMain />} />
+        <Route path="/home" element={<HomeMain />} />
+
+        {/* Other pages */}
+        <Route path="/WeeklyMenu1" element={<WeeklyMenuModal />} />
+        <Route path="/payment/*" element={<PaymentMain />} />
+        <Route path="/explore/*" element={<Explore />} />
+        <Route path="/WeeklyMenu" element={<WeeklyMenu />} />
+        <Route path="/order" element={<Order />} />
+        <Route path="/feedback" element={<FeedbackForm />} />
+        <Route path="/cart" element={<Cart />} />
+      </Routes>
+
+      {/* Footer always visible except on WelcomePage */}
+      {!showWelcome && <Footer />}
+    </div>
+  );
+}
+
+export default App;
+>>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e

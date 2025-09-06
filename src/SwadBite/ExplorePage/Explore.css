@@ -32,7 +32,7 @@ body {
 .explore-card {
   background: #ffffff;
   border-radius: 20px;
-  height: 350px;
+  height: 330px;
   padding: 0;
   overflow: hidden;
   box-shadow: 0 10px 25px rgba(88, 87, 87, 0.1);
@@ -42,6 +42,7 @@ body {
   opacity: 0;
   display: flex;
   flex-direction: column;
+  text-align: center; /* ✅ Center align everything inside card */
 }
 
 .explore-card:hover {
@@ -60,35 +61,6 @@ body {
   display: block;
 }
 
-/* Overlay Elements on Image */
-.card-image-wrapper {
-  position: relative;
-}
-
-.promoted {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.offer-tag {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background-color: #0057e7;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 0.85rem;
-}
-
 /* Card Content */
 .explore-card-content {
   padding: 20px;
@@ -96,6 +68,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  text-align: center; /* ✅ */
 }
 
 .explore-mess-name {
@@ -103,6 +76,7 @@ body {
   font-weight: bold;
   color: #525151;
   margin: 0;
+  text-align: center; /* ✅ */
 }
 
 .rating-badge {
@@ -112,27 +86,50 @@ body {
   border-radius: 12px;
   font-size: 0.85rem;
   font-weight: bold;
-  margin-left: auto;
+  margin: 5px auto; /* ✅ center horizontally */
+  display: inline-block;
 }
 
 .explore-mess-location {
   font-size: 1rem;
   margin-top: 2px;
+  text-align: center; /* ✅ */
   color: #555;
 }
 
 .card-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* ✅ center footer content */
   margin-top: 10px;
   font-size: 0.9rem;
   color: #555;
+  text-align: center;
 }
 
 .open-status {
   color: red;
   font-weight: 600;
 }
+
+/* Tagline */
+.explore-tagline {
+  font-size: 25px;
+  padding: 20px;
+  color: rgb(175, 25, 25);
+  font-weight: bold;
+  text-align: center; /* ✅ already centered */
+}
+
+.explore-map-link {
+  margin-top: 10px;
+  color: #0057e7;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center; /* ✅ */
+}
+
+
 
 /* Animation Keyframes */
 @keyframes slideRight {
@@ -168,6 +165,7 @@ body {
   }
 }
 
+
 /* Animation Classes */
 .animate-right {
   animation: slideRight 1s forwards;
@@ -177,20 +175,4 @@ body {
 }
 .animate-left {
   animation: slideLeft 1s forwards;
-}
-
-/* Tagline */
-.explore-tagline {
-  font-size: 25px;
-  padding: 20px;
-  color: rgb(175, 25, 25);
-  font-weight: bold;
-  text-align: center;
-}
-
-.explore-map-link {
-  margin-top: 10px;
-  color: #0057e7;
-  font-weight: bold;
-  text-decoration: none;
 }

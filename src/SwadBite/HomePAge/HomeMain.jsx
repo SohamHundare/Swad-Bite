@@ -21,7 +21,6 @@ function HomeMain() {
       <HowItWorks/>
       <About2/>
       <Testimonials/>
-    
       <HandelComForm/>
       <Chatbot />
     </div>

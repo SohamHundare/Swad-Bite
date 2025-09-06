@@ -8,8 +8,9 @@ const Order = () => {
   const [search, setSearch] = useState('');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [orderItems, setOrderItems] = useState([]);
+  const [orderPlaced, setOrderPlaced] = useState(false);
   const [orders, setOrders] = useState([]);
-    const [orderItems, setOrderItems] = useState([]);
   const [loading, setLoading] = useState(true); // ✅ Loading state
   const ordersPerPage = 3;
   const navigate = useNavigate();
@@ -100,6 +101,7 @@ const Order = () => {
     // localStorage.removeItem("swadbite_selectedMeal");
     // localStorage.removeItem("swadbite_selectedPlan");
     setOrderItems([]);
++    setOrderPlaced(true);
     // Refresh orders immediately
     await fetchOrders();
 

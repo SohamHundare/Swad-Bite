@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PaymentMethods from './PaymentMethods';
 
@@ -17,16 +17,30 @@ function PaymentForm(props) {
   const [selectedBank, setSelectedBank] = useState(''); 
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [orderItems, setOrderItems] = useState([]);
+  
+  useEffect(() => {
+    const rawCart = JSON.parse(localStorage.getItem("swadbite_cart")) || [];
+    const savedCart = Array.isArray(rawCart) ? rawCart : rawCart.items || [];
 
-  //fetching price from local storage
+    const selectedMeal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
+    const selectedPlan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
 
-  const meal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
-  const plan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
+    if (savedCart.length > 0) {
+      setOrderItems(savedCart.map(item => ({ ...item, quantity: item.quantity || 1 })));
+    } else if (selectedMeal) {
+      setOrderItems([{ ...selectedMeal, quantity: selectedMeal.quantity || 1 }]);
+    } else if (selectedPlan) {
+      setOrderItems([{ ...selectedPlan, quantity: selectedPlan.quantity || 1 }]);
+    } else {
+      setOrderItems([]);
+    }
+  }, []);
 
-  const price = plan?.price || meal?.price || 0;
-  const gst = +(price * 0.18).toFixed(2);
-  const maintenance = +(price * 0.02).toFixed(2);
-  const total = +(price + gst + maintenance).toFixed(2);
+  const baseFee = orderItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
+  const gst = +(baseFee * 0.08).toFixed(2);
+  const maintenance = +(baseFee * 0.02).toFixed(2);
+  const total = +(baseFee + gst + maintenance).toFixed(2);
 
   // UPI validation
   function checkUpiValid() {
@@ -144,10 +158,6 @@ function PaymentForm(props) {
           >
             <i className="fas fa-external-link-alt mr-2" /> Pay ₹{total}
           </button>
-          {/* <button onClick={handleRazorpayPayment} className="primary-btn w-full">
-            Pay ₹1,200.00 via Razorpay
-          </button> */}
-
         </div>
       );
     }
@@ -208,15 +218,7 @@ function PaymentForm(props) {
           >
             Pay ₹{total}
           </button>
-          {/* <button onClick={handleRazorpayPayment} className="primary-btn w-full">
-            Pay ₹1,200.00 via Razorpay
-          </button> */}
-          {/* <button onClick={handleStripeCheckout} className="primary-btn w-full">
-            Pay ₹1,200 with Card
-          </button> */}
-
-
-
+    
           <div className="flex justify-center space-x-4 mt-4">
             <img src={VisaImg} alt="Visa" className='h-10 w-20' />
             <img src={MAstercardImg} alt="Mastercard" className='h-10 w-20' />
@@ -245,9 +247,9 @@ function PaymentForm(props) {
             </select>
           </div>
           {errorMessage && <div className="text-red-600 text-sm">{errorMessage}</div>}
-          {/* <button onClick={handleRazorpayPayment} className="primary-btn w-full">
-            Pay ₹1,200.00 via Razorpay
-          </button> */}
+
+
+
            <button
             type="button"
             className="primary-btn w-full"
@@ -282,7 +284,7 @@ function PaymentForm(props) {
           />
           <div>
             <h3 className="font-medium text-gray-900">Payment for: Mess Fees</h3>
-            <p className="text-sm text-gray-500">Current Month: August 2025</p>
+            <p className="text-sm text-gray-500">Current Month: September 2025</p>
           </div>
         </div>
 

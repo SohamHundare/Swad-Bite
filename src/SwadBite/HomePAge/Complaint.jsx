@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import './Complaint.css';
 
@@ -28,6 +29,40 @@ export default function Complaint({ formData, setFormData, submitted, setSubmitt
     } catch (error) {
       console.error(error);
       alert('Error submitting complaint.');
+=======
+import React, { useState } from 'react';
+import './Complaint.css';
+
+export default function Complaint({ formData, setFormData, setShowComplaint }) {
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("https://swadbite-backend-2.onrender.com/api/complaints", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setSubmitted(true);
+        setFormData({
+          name: "",
+          phone: "",
+          place: "",
+          foodType: "",
+          messName: "",
+          complaintType: "",
+          description: "",
+        });
+      } else {
+        alert("Failed to store complaint.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error submitting complaint.");
+>>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
     }
   };
 
