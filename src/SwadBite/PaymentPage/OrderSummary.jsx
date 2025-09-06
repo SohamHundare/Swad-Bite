@@ -1,33 +1,68 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../HomePAge/Navbar";
+import { useNavigate } from "react-router-dom";
+import { saveOrder } from "../services/api";
 
 function OrderSummary() {
   const [orderItems, setOrderItems] = useState([]);
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const rawCart = JSON.parse(localStorage.getItem("swadbite_cart")) || [];
-    const savedCart = Array.isArray(rawCart) ? rawCart : rawCart.items || [];
-
+    const cart = JSON.parse(localStorage.getItem("swadbite_cart")) || [];
     const selectedMeal = JSON.parse(localStorage.getItem("swadbite_selectedMeal"));
     const selectedPlan = JSON.parse(localStorage.getItem("swadbite_selectedPlan"));
 
-    if (savedCart.length > 0) {
-      setOrderItems(savedCart.map(item => ({ ...item, quantity: item.quantity || 1 })));
-    } else if (selectedMeal) {
-      setOrderItems([{ ...selectedMeal, quantity: selectedMeal.quantity || 1 }]);
-    } else if (selectedPlan) {
-      setOrderItems([{ ...selectedPlan, quantity: selectedPlan.quantity || 1 }]);
-    } else {
-      setOrderItems([]);
-    }
+    if (cart.length > 0) setOrderItems(cart);
+    else if (selectedMeal) setOrderItems([selectedMeal]);
+    else if (selectedPlan) setOrderItems([selectedPlan]);
   }, []);
 
-  const baseFee = orderItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
+  const baseFee = orderItems.reduce(
+    (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
+    0
+  );
   const gst = +(baseFee * 0.18).toFixed(2);
   const maintenance = +(baseFee * 0.02).toFixed(2);
   const total = +(baseFee + gst + maintenance).toFixed(2);
 
-  if (orderItems.length === 0) {
+  const handleConfirmOrder = async () => {
+    if (orderItems.length === 0) return alert("No items to order!");
+
+    const newOrder = {
+      items: orderItems.map(item => ({
+        mealName: item.mealName || "",
+        planName: item.planName || "",
+        price: item.price || 0,
+        quantity: item.quantity || 1,
+      })),
+      amount: total,
+      date: new Date().toISOString(),
+      status: "Pending",
+    };
+
+    try {
+      console.log("📤 Sending order:", newOrder);
+      const res = await saveOrder(newOrder);
+      console.log("📥 Response:", res);
+
+      if (res.status === 201) {
+        alert("✅ Order placed successfully!");
+        setOrderPlaced(true);
+
+        // Clear cart & selections
+        // localStorage.removeItem("swadbite_cart");
+        // localStorage.removeItem("swadbite_selectedMeal");
+        // localStorage.removeItem("swadbite_selectedPlan");
+        setOrderItems([]);
+      }
+    } catch (err) {
+      console.error("❌ Failed to place order:", err.response?.data || err.message);
+      alert("Failed to place order. Check console for details.");
+    }
+  };
+
+  if (orderItems.length === 0 && !orderPlaced) {
     return (
       <>
         <Navbar />
@@ -70,7 +105,21 @@ function OrderSummary() {
               <span className="text-indigo-600 font-bold">₹{total}</span>
             </div>
           </div>
+          <div className="p-6 border-t border-gray-200 flex justify-end">
+            <button
+              onClick={handleConfirmOrder}
+              className="px-6 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition"
+            >
+              Confirm Order
+            </button>
+          </div>
         </div>
+
+        {orderPlaced && (
+          <div className="mt-6 p-4 bg-green-100 border border-green-300 rounded-lg text-green-700 text-center">
+            ✅ Order is Successful! Redirecting to your orders...
+          </div>
+        )}
       </div>
     </>
   );

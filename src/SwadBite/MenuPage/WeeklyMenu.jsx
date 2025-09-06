@@ -49,11 +49,11 @@ function deterministicPrice(name, mealType) {
   let s = 0;
   for (let i = 0; i < name.length; i++) s = (s * 31 + name.charCodeAt(i)) >>> 0;
   const ranges = {
-    breakfast: [25, 120],
-    lunch: [80, 260],
-    dinner: [100, 400],
+    breakfast: [10, 50],
+    lunch: [30, 80],
+    dinner: [40, 100],
   };
-  const [min, max] = ranges[mealType] || [60, 220];
+  const [min, max] = ranges[mealType] || [20, 60];
   return min + (s % (max - min + 1));
 }
 
