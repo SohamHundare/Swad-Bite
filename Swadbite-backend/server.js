@@ -9,12 +9,12 @@ const testimonialRoutes = require('./routes/testimonialRoutes');
 const stripeRoutes = require('./routes/stripeRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
-<<<<<<< HEAD
+
 const orderHistoryRoutes = require("./routes/OrderHistory");
 
-=======
+
 const userRoutes = require('./routes/UserRouter'); 
->>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
+
 
 const app = express();
 
@@ -44,22 +44,19 @@ app.post("/api/stripe/webhook", stripeRaw, (req, res) => {
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
-<<<<<<< HEAD
+
 app.use("/api/orderHistory", orderHistoryRoutes);
-=======
+
 // Use existing routes
->>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
+
 app.use("/api/stripe", stripeRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/testimonials", testimonialRoutes);
-<<<<<<< HEAD
-=======
+
+
 app.use('/api/users', userRoutes);
 
-// ======================
-// 🚀 Complaint Schema + Route
-// ======================
 const complaintSchema = new mongoose.Schema({
   name: String,
   phone: String,
@@ -84,9 +81,6 @@ app.post("/api/complaints", async (req, res) => {
   }
 });
 
-// ======================
-// 🚀 Mess Schema + Routes
-// ======================
 const messSchema = new mongoose.Schema({
   name: String,
   location: String,
@@ -98,7 +92,6 @@ const messSchema = new mongoose.Schema({
 
 const Mess = mongoose.model("Mess", messSchema);
 
-// ➤ Get all messes
 app.get("/api/messes", async (req, res) => {
   try {
     const messes = await Mess.find();
@@ -109,7 +102,7 @@ app.get("/api/messes", async (req, res) => {
   }
 });
 
-// ➤ Add new mess
+
 app.post("/api/messes", async (req, res) => {
   try {
     const mess = new Mess(req.body);
@@ -161,7 +154,7 @@ app.post("/api/offers", async (req, res) => {
 // ======================
 // 🚀 MongoDB Connection
 // ======================
->>>>>>> aad89e6f84c7736c994ce89e0dff4284cd4f3e3e
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
