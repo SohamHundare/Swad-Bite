@@ -83,7 +83,7 @@ const Cart = () => {
 
     localStorage.setItem(
       "swadbite_cart",
-      JSON.stringify({ items: itemsToPay })
+      JSON.stringify(itemsToPay )
     );
 
     // Clear selected meal/plan to avoid conflicts
